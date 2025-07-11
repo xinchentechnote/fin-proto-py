@@ -1,6 +1,6 @@
 import os, sys
 
-from bin_codec.bytebuf import ByteBuf
+from bytebuf import ByteBuf
 
 sys.path.append(os.getcwd())
 from unittest import TestCase
