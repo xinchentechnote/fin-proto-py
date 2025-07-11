@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from bin_codec.bytebuf import ByteBuf
+from bytebuf import ByteBuf
 
 
 class BinaryCodec(ABC):
