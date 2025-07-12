@@ -3,62 +3,6 @@ import unittest
 
 from root_packet import *
 
-class TestNestedPacket(unittest.TestCase):
-    def setUp(self):
-        sub_packet = SubPacket()
-        sub_packet.field_u_32 = 4
-        sub_packet.field_i_16_list = [2]
-        sub_packet_list = SubPacket()
-        sub_packet_list.field_u_32 = 4
-        sub_packet_list.field_i_16_list = [2]
-        iner_packet = InerPacket()
-        iner_packet.field_u_32 = 4
-        iner_packet.field_i_16_list = [2]
-        self.packet = NestedPacket()
-        self.packet.sub_packet = sub_packet
-        self.packet.sub_packet_list = [sub_packet_list]
-        self.packet.iner_packet = iner_packet
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = NestedPacket()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestSubPacket(unittest.TestCase):
-    def setUp(self):
-        self.packet = SubPacket()
-        self.packet.field_u_32 = 4
-        self.packet.field_i_16_list = [2]
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = SubPacket()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestEmptyPacket(unittest.TestCase):
-    def setUp(self):
-        self.packet = EmptyPacket()
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = EmptyPacket()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
 class TestRootPacket(unittest.TestCase):
     def setUp(self):
         payload = BasicPacket()
@@ -83,8 +27,8 @@ class TestRootPacket(unittest.TestCase):
         payload.field_f_32_list = [4]
         payload.field_f_64_list = [8]
         self.packet = RootPacket()
-        self.packet.msg_type = 1
         self.packet.payload_len = 4
+        self.packet.msg_type = 1
         self.packet.payload = payload
         self.packet.checksum = 4
         
@@ -149,6 +93,62 @@ class TestStringPacket(unittest.TestCase):
         buf = ByteBuf()
         self.packet.encode(buf)
         decoded_packet = StringPacket()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestNestedPacket(unittest.TestCase):
+    def setUp(self):
+        sub_packet = SubPacket()
+        sub_packet.field_u_32 = 4
+        sub_packet.field_i_16_list = [2]
+        sub_packet_list = SubPacket()
+        sub_packet_list.field_u_32 = 4
+        sub_packet_list.field_i_16_list = [2]
+        iner_packet = InerPacket()
+        iner_packet.field_u_32 = 4
+        iner_packet.field_i_16_list = [2]
+        self.packet = NestedPacket()
+        self.packet.sub_packet = sub_packet
+        self.packet.sub_packet_list = [sub_packet_list]
+        self.packet.iner_packet = iner_packet
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = NestedPacket()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestSubPacket(unittest.TestCase):
+    def setUp(self):
+        self.packet = SubPacket()
+        self.packet.field_u_32 = 4
+        self.packet.field_i_16_list = [2]
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = SubPacket()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestEmptyPacket(unittest.TestCase):
+    def setUp(self):
+        self.packet = EmptyPacket()
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = EmptyPacket()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
