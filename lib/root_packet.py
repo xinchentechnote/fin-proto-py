@@ -11,9 +11,11 @@ class RootPacket(BinaryCodec):
     
     def encode(self, buffer: ByteBuf):
         buffer.write_u16_le(self.msg_type)
+        payload_buf = ByteBuf()
+        self.payload.encode(payload_buf)
+        self.payload_len = payload_buf.readable_bytes_len()
         buffer.write_u32_le(self.payload_len)
-        if self.payload is not None:
-            self.payload.encode(buffer)
+        buffer.write_bytes(payload_buf.to_bytes())
         buffer.write_i32_le(self.checksum)
     
     def decode(self, buffer: ByteBuf):
