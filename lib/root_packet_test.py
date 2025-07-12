@@ -3,6 +3,20 @@ import unittest
 
 from root_packet import *
 
+class TestEmptyPacket(unittest.TestCase):
+    def setUp(self):
+        self.packet = EmptyPacket()
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = EmptyPacket()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
 class TestRootPacket(unittest.TestCase):
     def setUp(self):
         payload = BasicPacket()
@@ -135,20 +149,6 @@ class TestSubPacket(unittest.TestCase):
         buf = ByteBuf()
         self.packet.encode(buf)
         decoded_packet = SubPacket()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestEmptyPacket(unittest.TestCase):
-    def setUp(self):
-        self.packet = EmptyPacket()
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = EmptyPacket()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 

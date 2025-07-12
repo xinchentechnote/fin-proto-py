@@ -2,6 +2,54 @@
 from bytebuf import ByteBuf
 from codec import *
 
+class SubPacket(BinaryCodec):
+    def __init__(self):
+        self.field_u_32 = 0
+        self.field_i_16_list = []
+    
+    def encode(self, buffer: ByteBuf):
+        buffer.write_u32_le(self.field_u_32)
+        size = len(self.field_i_16_list)
+        buffer.write_u16_le(size)
+        for i in range(size):
+            buffer.write_i16_le(self.field_i_16_list[i])
+        
+    
+    def decode(self, buffer: ByteBuf):
+        self.field_u_32 = buffer.read_u32_le()
+        size = get_len_le(buffer, 'u16')
+        for i in range(size):
+            self.field_i_16_list.append(buffer.read_i16_le())
+        
+    
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return all([
+            self.field_u_32 == other.field_u_32,
+            self.field_i_16_list == other.field_i_16_list
+        ])
+        
+    
+
+
+class EmptyPacket(BinaryCodec):
+    def __init__(self):
+        pass
+    
+    def encode(self, buffer: ByteBuf):
+        pass
+    
+    def decode(self, buffer: ByteBuf):
+        pass
+    
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return True
+    
+
+
 class RootPacket(BinaryCodec):
     def __init__(self):
         self.msg_type = 0
@@ -141,43 +189,43 @@ class BasicPacket(BinaryCodec):
         self.field_u_64 = buffer.read_u64_le()
         self.field_f_32 = buffer.read_f32_le()
         self.field_f_64 = buffer.read_f64_le()
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_8_list.append(buffer.read_i8())
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_16_list.append(buffer.read_i16_le())
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_32_list.append(buffer.read_i32_le())
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_64_list.append(buffer.read_i64_le())
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_u_8_list.append(buffer.read_u8())
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_u_16_list.append(buffer.read_u16_le())
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_u_32_list.append(buffer.read_u32_le())
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_u_64_list.append(buffer.read_u64_le())
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_f_32_list.append(buffer.read_f32_le())
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_f_64_list.append(buffer.read_f64_le())
         
@@ -223,19 +271,19 @@ class StringPacket(BinaryCodec):
         self.field_fixed_string_10_list = []
     
     def encode(self, buffer: ByteBuf):
-        put_string(buffer, self.field_dynamic_string, 'u16')
-        put_string(buffer, self.field_dynamic_string_1, 'u16')
+        put_string_le(buffer, self.field_dynamic_string, 'u16')
+        put_string_le(buffer, self.field_dynamic_string_1, 'u16')
         write_fixed_string(buffer, self.field_fixed_string_1, 1)
         write_fixed_string(buffer, self.field_fixed_string_10, 10)
         size = len(self.field_dynamic_string_list)
         buffer.write_u16_le(size)
         for i in range(size):
-            put_string(buffer, self.field_dynamic_string_list[i], 'u16')
+            put_string_le(buffer, self.field_dynamic_string_list[i], 'u16')
         
         size = len(self.field_dynamic_string_1_list)
         buffer.write_u16_le(size)
         for i in range(size):
-            put_string(buffer, self.field_dynamic_string_1_list[i], 'u16')
+            put_string_le(buffer, self.field_dynamic_string_1_list[i], 'u16')
         
         size = len(self.field_fixed_string_1_list)
         buffer.write_u16_le(size)
@@ -249,23 +297,23 @@ class StringPacket(BinaryCodec):
         
     
     def decode(self, buffer: ByteBuf):
-        self.field_dynamic_string = get_string(buffer,'u16')
-        self.field_dynamic_string_1 = get_string(buffer,'u16')
+        self.field_dynamic_string = get_string_le(buffer,'u16')
+        self.field_dynamic_string_1 = get_string_le(buffer,'u16')
         self.field_fixed_string_1 = buffer.read_bytes(1).decode('utf-8').strip('\x00')
         self.field_fixed_string_10 = buffer.read_bytes(10).decode('utf-8').strip('\x00')
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
-            self.field_dynamic_string_list.append(get_string(buffer,'u16'))
+            self.field_dynamic_string_list.append(get_string_le(buffer,'u16'))
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
-            self.field_dynamic_string_1_list.append(get_string(buffer,'u16'))
+            self.field_dynamic_string_1_list.append(get_string_le(buffer,'u16'))
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_fixed_string_1_list.append(buffer.read_bytes(1).decode('utf-8').strip('\x00'))
         
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_fixed_string_10_list.append(buffer.read_bytes(10).decode('utf-8').strip('\x00'))
         
@@ -302,7 +350,7 @@ class InerPacket(BinaryCodec):
     
     def decode(self, buffer: ByteBuf):
         self.field_u_32 = buffer.read_u32_le()
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_16_list.append(buffer.read_i16_le())
         
@@ -334,7 +382,7 @@ class NestedPacket(BinaryCodec):
     def decode(self, buffer: ByteBuf):
         self.sub_packet = SubPacket()
         self.sub_packet.decode(buffer)
-        size = get_len(buffer, 'u16')
+        size = get_len_le(buffer, 'u16')
         for i in range(size):
             _sub_packet = SubPacket()
             _sub_packet.decode(buffer)
@@ -352,54 +400,6 @@ class NestedPacket(BinaryCodec):
             self.iner_packet == other.iner_packet
         ])
         
-    
-
-
-class SubPacket(BinaryCodec):
-    def __init__(self):
-        self.field_u_32 = 0
-        self.field_i_16_list = []
-    
-    def encode(self, buffer: ByteBuf):
-        buffer.write_u32_le(self.field_u_32)
-        size = len(self.field_i_16_list)
-        buffer.write_u16_le(size)
-        for i in range(size):
-            buffer.write_i16_le(self.field_i_16_list[i])
-        
-    
-    def decode(self, buffer: ByteBuf):
-        self.field_u_32 = buffer.read_u32_le()
-        size = get_len(buffer, 'u16')
-        for i in range(size):
-            self.field_i_16_list.append(buffer.read_i16_le())
-        
-    
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        return all([
-            self.field_u_32 == other.field_u_32,
-            self.field_i_16_list == other.field_i_16_list
-        ])
-        
-    
-
-
-class EmptyPacket(BinaryCodec):
-    def __init__(self):
-        pass
-    
-    def encode(self, buffer: ByteBuf):
-        pass
-    
-    def decode(self, buffer: ByteBuf):
-        pass
-    
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        return True
     
 
 
