@@ -3,32 +3,6 @@ import unittest
 
 from rc_binary import *
 
-class TestRcBinary(unittest.TestCase):
-    def setUp(self):
-        body = NewOrder()
-        body.cl_ord_id = "hello"
-        body.security_id = "hello"
-        body.side = "x"
-        body.price = 8
-        body.order_qty = 8
-        body.ord_type = "x"
-        body.account = "hello"
-        self.packet = RcBinary()
-        self.packet.version = 4
-        self.packet.msg_body_len = 4
-        self.packet.msg_type = 100101
-        self.packet.body = body
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = RcBinary()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
 class TestNewOrder(unittest.TestCase):
     def setUp(self):
         self.packet = NewOrder()
@@ -116,6 +90,32 @@ class TestCancelReject(unittest.TestCase):
         buf = ByteBuf()
         self.packet.encode(buf)
         decoded_packet = CancelReject()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestRcBinary(unittest.TestCase):
+    def setUp(self):
+        body = NewOrder()
+        body.cl_ord_id = "hello"
+        body.security_id = "hello"
+        body.side = "x"
+        body.price = 8
+        body.order_qty = 8
+        body.ord_type = "x"
+        body.account = "hello"
+        self.packet = RcBinary()
+        self.packet.version = 4
+        self.packet.msg_body_len = 4
+        self.packet.msg_type = 100101
+        self.packet.body = body
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = RcBinary()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
