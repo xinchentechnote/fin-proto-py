@@ -3,20 +3,6 @@ import unittest
 
 from root_packet import *
 
-class TestEmptyPacket(unittest.TestCase):
-    def setUp(self):
-        self.packet = EmptyPacket()
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = EmptyPacket()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
 class TestRootPacket(unittest.TestCase):
     def setUp(self):
         payload = BasicPacket()
@@ -24,6 +10,7 @@ class TestRootPacket(unittest.TestCase):
         payload.field_i_16 = 2
         payload.field_i_32 = 4
         payload.field_i_64 = 8
+        payload.field_char = "x"
         payload.field_u_8 = 1
         payload.field_u_16 = 2
         payload.field_u_32 = 4
@@ -34,6 +21,7 @@ class TestRootPacket(unittest.TestCase):
         payload.field_i_16_list = [2]
         payload.field_i_32_list = [4]
         payload.field_i_64_list = [8]
+        payload.field_char_list = ["x"]
         payload.field_u_8_list = [1]
         payload.field_u_16_list = [2]
         payload.field_u_32_list = [4]
@@ -63,6 +51,7 @@ class TestBasicPacket(unittest.TestCase):
         self.packet.field_i_16 = 2
         self.packet.field_i_32 = 4
         self.packet.field_i_64 = 8
+        self.packet.field_char = "x"
         self.packet.field_u_8 = 1
         self.packet.field_u_16 = 2
         self.packet.field_u_32 = 4
@@ -73,6 +62,7 @@ class TestBasicPacket(unittest.TestCase):
         self.packet.field_i_16_list = [2]
         self.packet.field_i_32_list = [4]
         self.packet.field_i_64_list = [8]
+        self.packet.field_char_list = ["x"]
         self.packet.field_u_8_list = [1]
         self.packet.field_u_16_list = [2]
         self.packet.field_u_32_list = [4]
@@ -149,6 +139,20 @@ class TestSubPacket(unittest.TestCase):
         buf = ByteBuf()
         self.packet.encode(buf)
         decoded_packet = SubPacket()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestEmptyPacket(unittest.TestCase):
+    def setUp(self):
+        self.packet = EmptyPacket()
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = EmptyPacket()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
