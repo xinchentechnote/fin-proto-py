@@ -2,6 +2,97 @@
 from bytebuf import ByteBuf
 from codec import *
 
+class SubPacket(BinaryCodec):
+    def __init__(self):
+        self.field_u_32 = 0
+        self.field_i_16_list = []
+    
+    def encode(self, buffer: ByteBuf):
+        buffer.write_u32_le(self.field_u_32)
+        size = len(self.field_i_16_list)
+        buffer.write_u16_le(size)
+        for i in range(size):
+            buffer.write_i16_le(self.field_i_16_list[i])
+        
+    
+    def decode(self, buffer: ByteBuf):
+        self.field_u_32 = buffer.read_u32_le()
+        size = get_len_le(buffer, 'u16')
+        for i in range(size):
+            self.field_i_16_list.append(buffer.read_i16_le())
+        
+    
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return all([
+            self.field_u_32 == other.field_u_32,
+            self.field_i_16_list == other.field_i_16_list
+        ])
+        
+    
+
+
+class EmptyPacket(BinaryCodec):
+    def __init__(self):
+        pass
+    
+    def encode(self, buffer: ByteBuf):
+        pass
+    
+    def decode(self, buffer: ByteBuf):
+        pass
+    
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return True
+    
+
+
+class RootPacket(BinaryCodec):
+    def __init__(self):
+        self.msg_type = 0
+        self.payload_len = 0
+        self.payload = None
+        self.checksum = 0
+    
+    def encode(self, buffer: ByteBuf):
+        buffer.write_u16_le(self.msg_type)
+        payload_buf = ByteBuf()
+        self.payload.encode(payload_buf)
+        self.payload_len = payload_buf.readable_bytes_len()
+        buffer.write_u32_le(self.payload_len)
+        buffer.write_bytes(payload_buf.to_bytes())
+        buffer.write_i32_le(self.checksum)
+    
+    def decode(self, buffer: ByteBuf):
+        self.msg_type = buffer.read_u16_le()
+        self.payload_len = buffer.read_u32_le()
+        if self.msg_type == 1:
+            self.payload = BasicPacket()
+        if self.msg_type == 2:
+            self.payload = StringPacket()
+        if self.msg_type == 3:
+            self.payload = NestedPacket()
+        if self.msg_type == 4:
+            self.payload = EmptyPacket()
+        self.payload.decode(buffer)
+        self.checksum = buffer.read_i32_le()
+    
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return all([
+            self.msg_type == other.msg_type,
+            self.payload_len == other.payload_len,
+            self.payload == other.payload,
+            self.checksum == other.checksum
+        ])
+        
+    
+
+
 class BasicPacket(BinaryCodec):
     def __init__(self):
         self.field_i_8 = 0
@@ -322,97 +413,6 @@ class NestedPacket(BinaryCodec):
             self.sub_packet == other.sub_packet,
             self.sub_packet_list == other.sub_packet_list,
             self.iner_packet == other.iner_packet
-        ])
-        
-    
-
-
-class SubPacket(BinaryCodec):
-    def __init__(self):
-        self.field_u_32 = 0
-        self.field_i_16_list = []
-    
-    def encode(self, buffer: ByteBuf):
-        buffer.write_u32_le(self.field_u_32)
-        size = len(self.field_i_16_list)
-        buffer.write_u16_le(size)
-        for i in range(size):
-            buffer.write_i16_le(self.field_i_16_list[i])
-        
-    
-    def decode(self, buffer: ByteBuf):
-        self.field_u_32 = buffer.read_u32_le()
-        size = get_len_le(buffer, 'u16')
-        for i in range(size):
-            self.field_i_16_list.append(buffer.read_i16_le())
-        
-    
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        return all([
-            self.field_u_32 == other.field_u_32,
-            self.field_i_16_list == other.field_i_16_list
-        ])
-        
-    
-
-
-class EmptyPacket(BinaryCodec):
-    def __init__(self):
-        pass
-    
-    def encode(self, buffer: ByteBuf):
-        pass
-    
-    def decode(self, buffer: ByteBuf):
-        pass
-    
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        return True
-    
-
-
-class RootPacket(BinaryCodec):
-    def __init__(self):
-        self.msg_type = 0
-        self.payload_len = 0
-        self.payload = None
-        self.checksum = 0
-    
-    def encode(self, buffer: ByteBuf):
-        buffer.write_u16_le(self.msg_type)
-        payload_buf = ByteBuf()
-        self.payload.encode(payload_buf)
-        self.payload_len = payload_buf.readable_bytes_len()
-        buffer.write_u32_le(self.payload_len)
-        buffer.write_bytes(payload_buf.to_bytes())
-        buffer.write_i32_le(self.checksum)
-    
-    def decode(self, buffer: ByteBuf):
-        self.msg_type = buffer.read_u16_le()
-        self.payload_len = buffer.read_u32_le()
-        if self.msg_type == 1:
-            self.payload = BasicPacket()
-        if self.msg_type == 2:
-            self.payload = StringPacket()
-        if self.msg_type == 3:
-            self.payload = NestedPacket()
-        if self.msg_type == 4:
-            self.payload = EmptyPacket()
-        self.payload.decode(buffer)
-        self.checksum = buffer.read_i32_le()
-    
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        return all([
-            self.msg_type == other.msg_type,
-            self.payload_len == other.payload_len,
-            self.payload == other.payload,
-            self.checksum == other.checksum
         ])
         
     
