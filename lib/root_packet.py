@@ -2,23 +2,6 @@
 from bytebuf import ByteBuf
 from codec import *
 
-class EmptyPacket(BinaryCodec):
-    def __init__(self):
-        pass
-    
-    def encode(self, buffer: ByteBuf):
-        pass
-    
-    def decode(self, buffer: ByteBuf):
-        pass
-    
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        return True
-    
-
-
 class RootPacket(BinaryCodec):
     def __init__(self):
         self.msg_type = 0
@@ -398,6 +381,23 @@ class SubPacket(BinaryCodec):
             self.field_i_16_list == other.field_i_16_list
         ])
         
+    
+
+
+class EmptyPacket(BinaryCodec):
+    def __init__(self):
+        pass
+    
+    def encode(self, buffer: ByteBuf):
+        pass
+    
+    def decode(self, buffer: ByteBuf):
+        pass
+    
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return True
     
 
 
