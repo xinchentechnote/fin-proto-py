@@ -3,124 +3,49 @@ import unittest
 
 from szse_binary import *
 
-class TestExtend104101(unittest.TestCase):
+class TestExtend201702(unittest.TestCase):
     def setUp(self):
-        self.packet = Extend104101()
-        self.packet.stop_px = 8
-        self.packet.min_qty = 8
-        self.packet.max_price_levels = 2
-        self.packet.time_in_force = "x"
+        self.packet = Extend201702()
+        self.packet.cash_order_qty = 8
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend201702()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend100701(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend100701()
+        self.packet.expiration_days = 2
+        self.packet.expiration_type = 1
+        self.packet.share_property = "xx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend100701()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend200502(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend200502()
+        self.packet.confirm_id = "xxxxxxxx"
         self.packet.cash_margin = "x"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend104101()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend104701(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend104701()
-        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend104701()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend200402(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend200402()
-        self.packet.stop_px = 8
-        self.packet.min_qty = 8
-        self.packet.max_price_levels = 2
-        self.packet.time_in_force = "x"
-        self.packet.position_effect = "x"
-        self.packet.covered_or_uncovered = 1
-        self.packet.contract_account_code = "xxxxxx"
-        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend200402()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend201802(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend201802()
-        self.packet.tenderer = "xxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend201802()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend101401(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend101401()
-        self.packet.stop_px = 8
-        self.packet.min_qty = 8
-        self.packet.max_price_levels = 2
-        self.packet.time_in_force = "x"
-        self.packet.position_effect = "x"
-        self.packet.covered_or_uncovered = 1
-        self.packet.contract_account_code = "xxxxxx"
-        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend101401()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend101601(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend101601()
-        self.packet.contract_account_code = "xxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend101601()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend200602(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend200602()
-        self.packet.cash_margin = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend200602()
+        decoded_packet = Extend200502()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
@@ -141,24 +66,24 @@ class TestExtend201602(unittest.TestCase):
 
 
 
-class TestExtend200115(unittest.TestCase):
+class TestExtend200215(unittest.TestCase):
     def setUp(self):
-        self.packet = Extend200115()
-        self.packet.cash_margin = "x"
+        self.packet = Extend200215()
+        self.packet.maturity_date = 4
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend200115()
+        decoded_packet = Extend200215()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
 
 
-class TestExtend200715(unittest.TestCase):
+class TestExtend204715(unittest.TestCase):
     def setUp(self):
-        self.packet = Extend200715()
+        self.packet = Extend204715()
         self.packet.expiration_days = 2
         self.packet.expiration_type = 1
         self.packet.maturity_date = 4
@@ -168,63 +93,23 @@ class TestExtend200715(unittest.TestCase):
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend200715()
+        decoded_packet = Extend204715()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
 
 
-class TestPartitionReport(unittest.TestCase):
+class TestPlatformStateInfo(unittest.TestCase):
     def setUp(self):
-        self.packet = PartitionReport()
-        self.packet.partition_no = 4
-        self.packet.report_index = 8
+        self.packet = PlatformStateInfo()
+        self.packet.platform_id = 2
+        self.packet.platform_state = 2
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = PartitionReport()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestSzseBinary(unittest.TestCase):
-    def setUp(self):
-        body = Logon()
-        body.sender_comp_id = "xxxxxxxxxxxxxxxxxxxx"
-        body.target_comp_id = "xxxxxxxxxxxxxxxxxxxx"
-        body.heart_btint = 4
-        body.password = "xxxxxxxxxxxxxxxx"
-        body.default_appl_ver_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        self.packet = SzseBinary()
-        self.packet.body_length = 4
-        self.packet.msg_type = 1
-        self.packet.body = body
-        self.packet.checksum = 4
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = SzseBinary()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestLogout(unittest.TestCase):
-    def setUp(self):
-        self.packet = Logout()
-        self.packet.session_status = 4
-        self.packet.text = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Logout()
+        decoded_packet = PlatformStateInfo()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
@@ -267,16 +152,506 @@ class TestNewOrder(unittest.TestCase):
 
 
 
-class TestExtend101501(unittest.TestCase):
+class TestExtend201502(unittest.TestCase):
     def setUp(self):
-        self.packet = Extend101501()
+        self.packet = Extend201502()
         self.packet.share_property = "xx"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend101501()
+        decoded_packet = Extend201502()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend204102(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend204102()
+        self.packet.stop_px = 8
+        self.packet.min_qty = 8
+        self.packet.max_price_levels = 2
+        self.packet.time_in_force = "x"
+        self.packet.cash_margin = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend204102()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend200315(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend200315()
+        self.packet.maturity_date = 4
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend200315()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestReportSynchronization(unittest.TestCase):
+    def setUp(self):
+        partition_report = PartitionReport()
+        partition_report.partition_no = 4
+        partition_report.report_index = 8
+        self.packet = ReportSynchronization()
+        self.packet.partition_report = [partition_report]
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = ReportSynchronization()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend202902(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend202902()
+        self.packet.deduction_pbu = "xxxxxx"
+        self.packet.deduction_account_id = "xxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend202902()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend200415(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend200415()
+        self.packet.position_effect = "x"
+        self.packet.covered_or_uncovered = 1
+        self.packet.contract_account_code = "xxxxxx"
+        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend200415()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend200515(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend200515()
+        self.packet.confirm_id = "xxxxxxxx"
+        self.packet.cash_margin = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend200515()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend203715(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend203715()
+        self.packet.cash_margin = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend203715()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestReportFinished(unittest.TestCase):
+    def setUp(self):
+        self.packet = ReportFinished()
+        self.packet.partition_no = 4
+        self.packet.report_index = 8
+        self.packet.platform_id = 2
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = ReportFinished()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestPlatformInfo(unittest.TestCase):
+    def setUp(self):
+        platform_partition = PlatformPartition()
+        platform_partition.partition_no = 4
+        self.packet = PlatformInfo()
+        self.packet.platform_id = 2
+        self.packet.platform_partition = [platform_partition]
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = PlatformInfo()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestTradingSessionStatus(unittest.TestCase):
+    def setUp(self):
+        self.packet = TradingSessionStatus()
+        self.packet.market_id = "xxxxxxxx"
+        self.packet.market_segment_id = "xxxxxxxx"
+        self.packet.trading_session_id = "xxxx"
+        self.packet.trading_session_sub_id = "xxxx"
+        self.packet.trad_ses_status = 2
+        self.packet.trad_ses_start_time = 8
+        self.packet.trad_ses_end_time = 8
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = TradingSessionStatus()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend101601(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend101601()
+        self.packet.contract_account_code = "xxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend101601()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend202802(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend202802()
+        self.packet.lender_pbu = "xxxxxx"
+        self.packet.lender_account_id = "xxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend202802()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend204115(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend204115()
+        self.packet.cash_margin = "x"
+        self.packet.settl_type = 2
+        self.packet.settl_period = 1
+        self.packet.counterparty_member_id = "xxxxxx"
+        self.packet.counterparty_investor_type = "xx"
+        self.packet.counterparty_investor_id = "xxxxxxxxxx"
+        self.packet.counterparty_investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet.counterparty_trader_code = "xxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend204115()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestOrderCancelRequest(unittest.TestCase):
+    def setUp(self):
+        self.packet = OrderCancelRequest()
+        self.packet.appl_id = "xxx"
+        self.packet.submitting_pbuid = "xxxxxx"
+        self.packet.security_id = "xxxxxxxx"
+        self.packet.security_id_source = "xxxx"
+        self.packet.owner_type = 2
+        self.packet.clearing_firm = "xx"
+        self.packet.transact_time = 8
+        self.packet.user_info = "xxxxxxxx"
+        self.packet.cl_ord_id = "xxxxxxxxxx"
+        self.packet.orig_cl_ord_id = "xxxxxxxxxx"
+        self.packet.side = "x"
+        self.packet.order_id = "xxxxxxxxxxxxxxxx"
+        self.packet.order_qty = 8
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = OrderCancelRequest()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend100601(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend100601()
+        self.packet.cash_margin = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend100601()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend104701(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend104701()
+        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend104701()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend204702(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend204702()
+        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend204702()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend206315(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend206315()
+        self.packet.cash_margin = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend206315()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend104101(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend104101()
+        self.packet.stop_px = 8
+        self.packet.min_qty = 8
+        self.packet.max_price_levels = 2
+        self.packet.time_in_force = "x"
+        self.packet.cash_margin = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend104101()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend101801(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend101801()
+        self.packet.tenderer = "xxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend101801()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend106301(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend106301()
+        self.packet.stop_px = 8
+        self.packet.min_qty = 8
+        self.packet.max_price_levels = 2
+        self.packet.time_in_force = "x"
+        self.packet.lot_type = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend106301()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend201202(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend201202()
+        self.packet.insufficient_security_id = "xxxxxxxx"
+        self.packet.no_security = 4
+        self.packet.underlying_security_id = "xxxxxxxx"
+        self.packet.underlying_security_id_source = "xxxx"
+        self.packet.delivery_qty = 8
+        self.packet.subst_cash = 8
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend201202()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend204130(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend204130()
+        self.packet.member_id = "xxxxxx"
+        self.packet.investor_type = "xx"
+        self.packet.investor_id = "xxxxxxxxxx"
+        self.packet.investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet.trader_code = "xxxxxxxx"
+        self.packet.counterparty_member_id = "xxxxxx"
+        self.packet.counterparty_investor_type = "xx"
+        self.packet.counterparty_investor_id = "xxxxxxxxxx"
+        self.packet.counterparty_investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet.counterparty_trader_code = "xxxxxxxx"
+        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
+        self.packet.bid_trans_type = 2
+        self.packet.bid_exec_inst_type = 2
+        self.packet.settl_type = 2
+        self.packet.settl_period = 1
+        self.packet.cash_margin = "x"
+        self.packet.memo = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend204130()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestPlatformPartition(unittest.TestCase):
+    def setUp(self):
+        self.packet = PlatformPartition()
+        self.packet.partition_no = 4
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = PlatformPartition()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend100101(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend100101()
+        self.packet.stop_px = 8
+        self.packet.min_qty = 8
+        self.packet.max_price_levels = 2
+        self.packet.time_in_force = "x"
+        self.packet.cash_margin = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend100101()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend200402(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend200402()
+        self.packet.stop_px = 8
+        self.packet.min_qty = 8
+        self.packet.max_price_levels = 2
+        self.packet.time_in_force = "x"
+        self.packet.position_effect = "x"
+        self.packet.covered_or_uncovered = 1
+        self.packet.contract_account_code = "xxxxxx"
+        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend200402()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend200702(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend200702()
+        self.packet.expiration_days = 2
+        self.packet.expiration_type = 1
+        self.packet.share_property = "xx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend200702()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
@@ -304,32 +679,65 @@ class TestExtend206302(unittest.TestCase):
 
 
 
-class TestPlatformStateInfo(unittest.TestCase):
+class TestExtend200615(unittest.TestCase):
     def setUp(self):
-        self.packet = PlatformStateInfo()
-        self.packet.platform_id = 2
-        self.packet.platform_state = 2
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = PlatformStateInfo()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend100601(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend100601()
+        self.packet = Extend200615()
         self.packet.cash_margin = "x"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend100601()
+        decoded_packet = Extend200615()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend102701(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend102701()
+        self.packet.disposal_pbu = "xxxxxx"
+        self.packet.disposal_account_id = "xxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend102701()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend103501(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend103501()
+        self.packet.contract_account_code = "xxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend103501()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend200202(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend200202()
+        self.packet.stop_px = 8
+        self.packet.min_qty = 8
+        self.packet.max_price_levels = 2
+        self.packet.time_in_force = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend200202()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
@@ -351,79 +759,206 @@ class TestExtend202702(unittest.TestCase):
 
 
 
-class TestExtend200215(unittest.TestCase):
+class TestExtend203102(unittest.TestCase):
     def setUp(self):
-        self.packet = Extend200215()
-        self.packet.maturity_date = 4
+        self.packet = Extend203102()
+        self.packet.insufficient_security_id = "xxxxxxxx"
+        self.packet.no_security = 4
+        self.packet.underlying_security_id = "xxxxxxxx"
+        self.packet.underlying_security_id_source = "xxxx"
+        self.packet.delivery_qty = 8
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend200215()
+        decoded_packet = Extend203102()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
 
 
-class TestTradingSessionStatus(unittest.TestCase):
+class TestExtend104128(unittest.TestCase):
     def setUp(self):
-        self.packet = TradingSessionStatus()
-        self.packet.market_id = "xxxxxxxx"
-        self.packet.market_segment_id = "xxxxxxxx"
-        self.packet.trading_session_id = "xxxx"
-        self.packet.trading_session_sub_id = "xxxx"
-        self.packet.trad_ses_status = 2
-        self.packet.trad_ses_start_time = 8
-        self.packet.trad_ses_end_time = 8
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = TradingSessionStatus()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend101701(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend101701()
-        self.packet.cash_order_qty = 8
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend101701()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend200102(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend200102()
-        self.packet.stop_px = 8
+        self.packet = Extend104128()
+        self.packet.member_id = "xxxxxx"
+        self.packet.investor_type = "xx"
+        self.packet.investor_id = "xxxxxxxxxx"
+        self.packet.investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet.trader_code = "xxxxxxxx"
+        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
+        self.packet.bid_trans_type = 2
+        self.packet.bid_exec_inst_type = 2
+        self.packet.low_limit_price = 8
+        self.packet.high_limit_price = 8
         self.packet.min_qty = 8
-        self.packet.max_price_levels = 2
-        self.packet.time_in_force = "x"
+        self.packet.trade_date = 4
+        self.packet.settl_type = 2
+        self.packet.settl_period = 1
+        self.packet.pre_trade_anonymity = 1
+        self.packet.cash_margin = "x"
+        self.packet.memo = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend104128()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend201802(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend201802()
+        self.packet.tenderer = "xxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend201802()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend203702(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend203702()
         self.packet.cash_margin = "x"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend200102()
+        decoded_packet = Extend203702()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
 
 
-class TestExtend202902(unittest.TestCase):
+class TestLogon(unittest.TestCase):
     def setUp(self):
-        self.packet = Extend202902()
+        self.packet = Logon()
+        self.packet.sender_comp_id = "xxxxxxxxxxxxxxxxxxxx"
+        self.packet.target_comp_id = "xxxxxxxxxxxxxxxxxxxx"
+        self.packet.heart_btint = 4
+        self.packet.password = "xxxxxxxxxxxxxxxx"
+        self.packet.default_appl_ver_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Logon()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestLogout(unittest.TestCase):
+    def setUp(self):
+        self.packet = Logout()
+        self.packet.session_status = 4
+        self.packet.text = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Logout()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend200602(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend200602()
+        self.packet.cash_margin = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend200602()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend203502(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend203502()
+        self.packet.contract_account_code = "xxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend203502()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend200715(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend200715()
+        self.packet.expiration_days = 2
+        self.packet.expiration_type = 1
+        self.packet.maturity_date = 4
+        self.packet.share_property = "xx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend200715()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend100301(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend100301()
+        self.packet.stop_px = 8
+        self.packet.min_qty = 8
+        self.packet.max_price_levels = 2
+        self.packet.time_in_force = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend100301()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend102801(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend102801()
+        self.packet.lender_pbu = "xxxxxx"
+        self.packet.lender_account_id = "xxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend102801()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend102901(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend102901()
         self.packet.deduction_pbu = "xxxxxx"
         self.packet.deduction_account_id = "xxxxxxxxxxxx"
         
@@ -431,84 +966,22 @@ class TestExtend202902(unittest.TestCase):
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend202902()
+        decoded_packet = Extend102901()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
 
 
-class TestReportSynchronization(unittest.TestCase):
+class TestExtend103701(unittest.TestCase):
     def setUp(self):
-        partition_report = PartitionReport()
-        partition_report.partition_no = 4
-        partition_report.report_index = 8
-        self.packet = ReportSynchronization()
-        self.packet.partition_report = [partition_report]
+        self.packet = Extend103701()
+        self.packet.cash_margin = "x"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = ReportSynchronization()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend200702(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend200702()
-        self.packet.expiration_days = 2
-        self.packet.expiration_type = 1
-        self.packet.share_property = "xx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend200702()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend204715(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend204715()
-        self.packet.expiration_days = 2
-        self.packet.expiration_type = 1
-        self.packet.maturity_date = 4
-        self.packet.share_property = "xx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend204715()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestBusinessReject(unittest.TestCase):
-    def setUp(self):
-        self.packet = BusinessReject()
-        self.packet.appl_id = "xxx"
-        self.packet.transact_time = 8
-        self.packet.submitting_pbuid = "xxxxxx"
-        self.packet.security_id = "xxxxxxxx"
-        self.packet.security_id_source = "xxxx"
-        self.packet.ref_seq_num = 8
-        self.packet.ref_msg_type = 4
-        self.packet.business_reject_ref_id = "xxxxxxxxxx"
-        self.packet.business_reject_reason = 2
-        self.packet.business_reject_text = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = BusinessReject()
+        decoded_packet = Extend103701()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
@@ -563,40 +1036,90 @@ class TestExecutionConfirm(unittest.TestCase):
 
 
 
-class TestExtend104128(unittest.TestCase):
+class TestExtend200302(unittest.TestCase):
     def setUp(self):
-        self.packet = Extend104128()
-        self.packet.member_id = "xxxxxx"
-        self.packet.investor_type = "xx"
-        self.packet.investor_id = "xxxxxxxxxx"
-        self.packet.investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        self.packet.trader_code = "xxxxxxxx"
-        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
-        self.packet.bid_trans_type = 2
-        self.packet.bid_exec_inst_type = 2
-        self.packet.low_limit_price = 8
-        self.packet.high_limit_price = 8
+        self.packet = Extend200302()
+        self.packet.stop_px = 8
         self.packet.min_qty = 8
-        self.packet.trade_date = 4
-        self.packet.settl_type = 2
-        self.packet.settl_period = 1
-        self.packet.pre_trade_anonymity = 1
-        self.packet.cash_margin = "x"
-        self.packet.memo = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet.max_price_levels = 2
+        self.packet.time_in_force = "x"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend104128()
+        decoded_packet = Extend200302()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
 
 
-class TestExtend200502(unittest.TestCase):
+class TestExtend200115(unittest.TestCase):
     def setUp(self):
-        self.packet = Extend200502()
+        self.packet = Extend200115()
+        self.packet.cash_margin = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend200115()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestBusinessReject(unittest.TestCase):
+    def setUp(self):
+        self.packet = BusinessReject()
+        self.packet.appl_id = "xxx"
+        self.packet.transact_time = 8
+        self.packet.submitting_pbuid = "xxxxxx"
+        self.packet.security_id = "xxxxxxxx"
+        self.packet.security_id_source = "xxxx"
+        self.packet.ref_seq_num = 8
+        self.packet.ref_msg_type = 4
+        self.packet.business_reject_ref_id = "xxxxxxxxxx"
+        self.packet.business_reject_reason = 2
+        self.packet.business_reject_text = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = BusinessReject()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestSzseBinary(unittest.TestCase):
+    def setUp(self):
+        body = Logon()
+        body.sender_comp_id = "xxxxxxxxxxxxxxxxxxxx"
+        body.target_comp_id = "xxxxxxxxxxxxxxxxxxxx"
+        body.heart_btint = 4
+        body.password = "xxxxxxxxxxxxxxxx"
+        body.default_appl_ver_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet = SzseBinary()
+        self.packet.body_length = 4
+        self.packet.msg_type = 1
+        self.packet.body = body
+        self.packet.checksum = 4
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = SzseBinary()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend100501(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend100501()
         self.packet.confirm_id = "xxxxxxxx"
         self.packet.cash_margin = "x"
         
@@ -604,222 +1127,7 @@ class TestExtend200502(unittest.TestCase):
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend200502()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend201502(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend201502()
-        self.packet.share_property = "xx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend201502()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend204129(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend204129()
-        self.packet.member_id = "xxxxxx"
-        self.packet.investor_type = "xx"
-        self.packet.investor_id = "xxxxxxxxxx"
-        self.packet.investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        self.packet.trader_code = "xxxxxxxx"
-        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
-        self.packet.bid_trans_type = 2
-        self.packet.bid_exec_inst_type = 2
-        self.packet.low_limit_price = 8
-        self.packet.high_limit_price = 8
-        self.packet.min_qty = 8
-        self.packet.trade_date = 4
-        self.packet.settl_type = 2
-        self.packet.settl_period = 1
-        self.packet.pre_trade_anonymity = 1
-        self.packet.cash_margin = "x"
-        self.packet.memo = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend204129()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend100301(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend100301()
-        self.packet.stop_px = 8
-        self.packet.min_qty = 8
-        self.packet.max_price_levels = 2
-        self.packet.time_in_force = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend100301()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend101801(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend101801()
-        self.packet.tenderer = "xxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend101801()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend102801(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend102801()
-        self.packet.lender_pbu = "xxxxxx"
-        self.packet.lender_account_id = "xxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend102801()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend106301(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend106301()
-        self.packet.stop_px = 8
-        self.packet.min_qty = 8
-        self.packet.max_price_levels = 2
-        self.packet.time_in_force = "x"
-        self.packet.lot_type = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend106301()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend201702(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend201702()
-        self.packet.cash_order_qty = 8
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend201702()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend200315(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend200315()
-        self.packet.maturity_date = 4
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend200315()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend204115(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend204115()
-        self.packet.cash_margin = "x"
-        self.packet.settl_type = 2
-        self.packet.settl_period = 1
-        self.packet.counterparty_member_id = "xxxxxx"
-        self.packet.counterparty_investor_type = "xx"
-        self.packet.counterparty_investor_id = "xxxxxxxxxx"
-        self.packet.counterparty_investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        self.packet.counterparty_trader_code = "xxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend204115()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend100201(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend100201()
-        self.packet.stop_px = 8
-        self.packet.min_qty = 8
-        self.packet.max_price_levels = 2
-        self.packet.time_in_force = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend100201()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend102701(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend102701()
-        self.packet.disposal_pbu = "xxxxxx"
-        self.packet.disposal_account_id = "xxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend102701()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend203502(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend203502()
-        self.packet.contract_account_code = "xxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend203502()
+        decoded_packet = Extend100501()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
@@ -866,61 +1174,110 @@ class TestExecutionReport(unittest.TestCase):
 
 
 
-class TestExtend200415(unittest.TestCase):
+class TestExtend100201(unittest.TestCase):
     def setUp(self):
-        self.packet = Extend200415()
-        self.packet.position_effect = "x"
-        self.packet.covered_or_uncovered = 1
-        self.packet.contract_account_code = "xxxxxx"
+        self.packet = Extend100201()
+        self.packet.stop_px = 8
+        self.packet.min_qty = 8
+        self.packet.max_price_levels = 2
+        self.packet.time_in_force = "x"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend100201()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend101501(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend101501()
+        self.packet.share_property = "xx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend101501()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestPartitionReport(unittest.TestCase):
+    def setUp(self):
+        self.packet = PartitionReport()
+        self.packet.partition_no = 4
+        self.packet.report_index = 8
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = PartitionReport()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestHeartbeat(unittest.TestCase):
+    def setUp(self):
+        self.packet = Heartbeat()
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Heartbeat()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend101701(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend101701()
+        self.packet.cash_order_qty = 8
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = Extend101701()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExtend204129(unittest.TestCase):
+    def setUp(self):
+        self.packet = Extend204129()
+        self.packet.member_id = "xxxxxx"
+        self.packet.investor_type = "xx"
+        self.packet.investor_id = "xxxxxxxxxx"
+        self.packet.investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet.trader_code = "xxxxxxxx"
         self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend200415()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend103701(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend103701()
+        self.packet.bid_trans_type = 2
+        self.packet.bid_exec_inst_type = 2
+        self.packet.low_limit_price = 8
+        self.packet.high_limit_price = 8
+        self.packet.min_qty = 8
+        self.packet.trade_date = 4
+        self.packet.settl_type = 2
+        self.packet.settl_period = 1
+        self.packet.pre_trade_anonymity = 1
         self.packet.cash_margin = "x"
+        self.packet.memo = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend103701()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestOrderCancelRequest(unittest.TestCase):
-    def setUp(self):
-        self.packet = OrderCancelRequest()
-        self.packet.appl_id = "xxx"
-        self.packet.submitting_pbuid = "xxxxxx"
-        self.packet.security_id = "xxxxxxxx"
-        self.packet.security_id_source = "xxxx"
-        self.packet.owner_type = 2
-        self.packet.clearing_firm = "xx"
-        self.packet.transact_time = 8
-        self.packet.user_info = "xxxxxxxx"
-        self.packet.cl_ord_id = "xxxxxxxxxx"
-        self.packet.orig_cl_ord_id = "xxxxxxxxxx"
-        self.packet.side = "x"
-        self.packet.order_id = "xxxxxxxxxxxxxxxx"
-        self.packet.order_qty = 8
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = OrderCancelRequest()
+        decoded_packet = Extend204129()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
@@ -958,357 +1315,31 @@ class TestCancelReject(unittest.TestCase):
 
 
 
-class TestPlatformInfo(unittest.TestCase):
+class TestExtend101401(unittest.TestCase):
     def setUp(self):
-        platform_partition = PlatformPartition()
-        platform_partition.partition_no = 4
-        self.packet = PlatformInfo()
-        self.packet.platform_id = 2
-        self.packet.platform_partition = [platform_partition]
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = PlatformInfo()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestPlatformPartition(unittest.TestCase):
-    def setUp(self):
-        self.packet = PlatformPartition()
-        self.packet.partition_no = 4
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = PlatformPartition()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend200202(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend200202()
+        self.packet = Extend101401()
         self.packet.stop_px = 8
         self.packet.min_qty = 8
         self.packet.max_price_levels = 2
         self.packet.time_in_force = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend200202()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend100501(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend100501()
-        self.packet.confirm_id = "xxxxxxxx"
-        self.packet.cash_margin = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend100501()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend103501(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend103501()
+        self.packet.position_effect = "x"
+        self.packet.covered_or_uncovered = 1
         self.packet.contract_account_code = "xxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend103501()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend200615(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend200615()
-        self.packet.cash_margin = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend200615()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend203715(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend203715()
-        self.packet.cash_margin = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend203715()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend100101(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend100101()
-        self.packet.stop_px = 8
-        self.packet.min_qty = 8
-        self.packet.max_price_levels = 2
-        self.packet.time_in_force = "x"
-        self.packet.cash_margin = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend100101()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend200302(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend200302()
-        self.packet.stop_px = 8
-        self.packet.min_qty = 8
-        self.packet.max_price_levels = 2
-        self.packet.time_in_force = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend200302()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestHeartbeat(unittest.TestCase):
-    def setUp(self):
-        self.packet = Heartbeat()
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Heartbeat()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend201202(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend201202()
-        self.packet.insufficient_security_id = "xxxxxxxx"
-        self.packet.no_security = 4
-        self.packet.underlying_security_id = "xxxxxxxx"
-        self.packet.underlying_security_id_source = "xxxx"
-        self.packet.delivery_qty = 8
-        self.packet.subst_cash = 8
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend201202()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend202802(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend202802()
-        self.packet.lender_pbu = "xxxxxx"
-        self.packet.lender_account_id = "xxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend202802()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend206315(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend206315()
-        self.packet.cash_margin = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend206315()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestLogon(unittest.TestCase):
-    def setUp(self):
-        self.packet = Logon()
-        self.packet.sender_comp_id = "xxxxxxxxxxxxxxxxxxxx"
-        self.packet.target_comp_id = "xxxxxxxxxxxxxxxxxxxx"
-        self.packet.heart_btint = 4
-        self.packet.password = "xxxxxxxxxxxxxxxx"
-        self.packet.default_appl_ver_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Logon()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend100701(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend100701()
-        self.packet.expiration_days = 2
-        self.packet.expiration_type = 1
-        self.packet.share_property = "xx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend100701()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend203702(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend203702()
-        self.packet.cash_margin = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend203702()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend200515(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend200515()
-        self.packet.confirm_id = "xxxxxxxx"
-        self.packet.cash_margin = "x"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend200515()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend102901(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend102901()
-        self.packet.deduction_pbu = "xxxxxx"
-        self.packet.deduction_account_id = "xxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend102901()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend203102(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend203102()
-        self.packet.insufficient_security_id = "xxxxxxxx"
-        self.packet.no_security = 4
-        self.packet.underlying_security_id = "xxxxxxxx"
-        self.packet.underlying_security_id_source = "xxxx"
-        self.packet.delivery_qty = 8
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend203102()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend204702(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend204702()
         self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend204702()
+        decoded_packet = Extend101401()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
 
 
-class TestReportFinished(unittest.TestCase):
+class TestExtend200102(unittest.TestCase):
     def setUp(self):
-        self.packet = ReportFinished()
-        self.packet.partition_no = 4
-        self.packet.report_index = 8
-        self.packet.platform_id = 2
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = ReportFinished()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend204102(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend204102()
+        self.packet = Extend200102()
         self.packet.stop_px = 8
         self.packet.min_qty = 8
         self.packet.max_price_levels = 2
@@ -1319,38 +1350,7 @@ class TestExtend204102(unittest.TestCase):
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Extend204102()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExtend204130(unittest.TestCase):
-    def setUp(self):
-        self.packet = Extend204130()
-        self.packet.member_id = "xxxxxx"
-        self.packet.investor_type = "xx"
-        self.packet.investor_id = "xxxxxxxxxx"
-        self.packet.investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        self.packet.trader_code = "xxxxxxxx"
-        self.packet.counterparty_member_id = "xxxxxx"
-        self.packet.counterparty_investor_type = "xx"
-        self.packet.counterparty_investor_id = "xxxxxxxxxx"
-        self.packet.counterparty_investor_name = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        self.packet.counterparty_trader_code = "xxxxxxxx"
-        self.packet.secondary_order_id = "xxxxxxxxxxxxxxxx"
-        self.packet.bid_trans_type = 2
-        self.packet.bid_exec_inst_type = 2
-        self.packet.settl_type = 2
-        self.packet.settl_period = 1
-        self.packet.cash_margin = "x"
-        self.packet.memo = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = Extend204130()
+        decoded_packet = Extend200102()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
