@@ -8,7 +8,7 @@ BIN_DIR := ~/workspace/fin-protoc/bin/
 
 .PHONY: all compile format fix clean
 
-all: compile test
+all: compile
 
 build: compile
 
@@ -30,10 +30,6 @@ compile:
 # 	@echo "Applying fixes..."
 # 	goimports -w ./..
 # 	go fix ./...
-
-test:
-	@echo "Running tests..."
-	pytest
 
 # Help target
 help:

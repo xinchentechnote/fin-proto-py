@@ -3,42 +3,6 @@ import unittest
 
 from root_packet import *
 
-class TestBasicPacket(unittest.TestCase):
-    def setUp(self):
-        self.packet = BasicPacket()
-        self.packet.field_i_8 = 1
-        self.packet.field_i_16 = 2
-        self.packet.field_i_32 = 4
-        self.packet.field_i_64 = 8
-        self.packet.field_char = "x"
-        self.packet.field_u_8 = 1
-        self.packet.field_u_16 = 2
-        self.packet.field_u_32 = 4
-        self.packet.field_u_64 = 8
-        self.packet.field_f_32 = 4
-        self.packet.field_f_64 = 8
-        self.packet.field_i_8_list = [1]
-        self.packet.field_i_16_list = [2]
-        self.packet.field_i_32_list = [4]
-        self.packet.field_i_64_list = [8]
-        self.packet.field_char_list = ["x"]
-        self.packet.field_u_8_list = [1]
-        self.packet.field_u_16_list = [2]
-        self.packet.field_u_32_list = [4]
-        self.packet.field_u_64_list = [8]
-        self.packet.field_f_32_list = [4]
-        self.packet.field_f_64_list = [8]
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = BasicPacket()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
 class TestStringPacket(unittest.TestCase):
     def setUp(self):
         self.packet = StringPacket()
@@ -153,6 +117,42 @@ class TestRootPacket(unittest.TestCase):
         buf = ByteBuf()
         self.packet.encode(buf)
         decoded_packet = RootPacket()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestBasicPacket(unittest.TestCase):
+    def setUp(self):
+        self.packet = BasicPacket()
+        self.packet.field_i_8 = 1
+        self.packet.field_i_16 = 2
+        self.packet.field_i_32 = 4
+        self.packet.field_i_64 = 8
+        self.packet.field_char = "x"
+        self.packet.field_u_8 = 1
+        self.packet.field_u_16 = 2
+        self.packet.field_u_32 = 4
+        self.packet.field_u_64 = 8
+        self.packet.field_f_32 = 4
+        self.packet.field_f_64 = 8
+        self.packet.field_i_8_list = [1]
+        self.packet.field_i_16_list = [2]
+        self.packet.field_i_32_list = [4]
+        self.packet.field_i_64_list = [8]
+        self.packet.field_char_list = ["x"]
+        self.packet.field_u_8_list = [1]
+        self.packet.field_u_16_list = [2]
+        self.packet.field_u_32_list = [4]
+        self.packet.field_u_64_list = [8]
+        self.packet.field_f_32_list = [4]
+        self.packet.field_f_64_list = [8]
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = BasicPacket()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
