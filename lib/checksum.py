@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 import zlib
 
-from lib.bytebuf import ByteBuf
+from bytebuf import ByteBuf
 
 
 InputType = TypeVar("InputType")
