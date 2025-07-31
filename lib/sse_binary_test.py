@@ -23,75 +23,6 @@ class TestSseBinary(unittest.TestCase):
 
 
 
-class TestOrderCancel(unittest.TestCase):
-    def setUp(self):
-        self.packet = OrderCancel()
-        self.packet.biz_id = 4
-        self.packet.biz_pbu = "xxxxxxxx"
-        self.packet.cl_ord_id = "xxxxxxxxxx"
-        self.packet.security_id = "xxxxxxxxxxxx"
-        self.packet.account = "xxxxxxxxxxxxx"
-        self.packet.owner_type = 1
-        self.packet.side = "x"
-        self.packet.orig_cl_ord_id = "xxxxxxxxxx"
-        self.packet.transact_time = 8
-        self.packet.branch_id = "xxxxxxxx"
-        self.packet.user_info = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = OrderCancel()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestCancelReject(unittest.TestCase):
-    def setUp(self):
-        self.packet = CancelReject()
-        self.packet.pbu = "xxxxxxxx"
-        self.packet.set_id = 4
-        self.packet.report_index = 8
-        self.packet.biz_id = 4
-        self.packet.biz_pbu = "xxxxxxxx"
-        self.packet.cl_ord_id = "xxxxxxxxxx"
-        self.packet.security_id = "xxxxxxxxxxxx"
-        self.packet.orig_cl_ord_id = "xxxxxxxxxx"
-        self.packet.branch_id = "xxxxxxxx"
-        self.packet.cxl_rej_reason = 4
-        self.packet.trade_date = 4
-        self.packet.transact_time = 8
-        self.packet.user_info = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = CancelReject()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExecRptInfo(unittest.TestCase):
-    def setUp(self):
-        self.packet = ExecRptInfo()
-        self.packet.platform_id = 2
-        self.packet.pbu = ["xxxxxxxx"]
-        self.packet.set_id = [4]
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = ExecRptInfo()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
 class TestHeartbeat(unittest.TestCase):
     def setUp(self):
         self.packet = Heartbeat()
@@ -106,59 +37,21 @@ class TestHeartbeat(unittest.TestCase):
 
 
 
-class TestReport(unittest.TestCase):
+class TestLogon(unittest.TestCase):
     def setUp(self):
-        self.packet = Report()
-        self.packet.pbu = "xxxxxxxx"
-        self.packet.set_id = 4
-        self.packet.report_index = 8
-        self.packet.biz_id = 4
-        self.packet.exec_type = "x"
-        self.packet.biz_pbu = "xxxxxxxx"
-        self.packet.cl_ord_id = "xxxxxxxxxx"
-        self.packet.security_id = "xxxxxxxxxxxx"
-        self.packet.account = "xxxxxxxxxxxxx"
-        self.packet.owner_type = 1
-        self.packet.side = "x"
-        self.packet.price = 8
-        self.packet.order_qty = 8
-        self.packet.leaves_qty = 8
-        self.packet.cxl_qty = 8
-        self.packet.ord_type = "x"
-        self.packet.time_in_force = "x"
-        self.packet.ord_status = "x"
-        self.packet.credit_tag = "xx"
-        self.packet.orig_cl_ord_id = "xxxxxxxxxx"
-        self.packet.clearing_firm = "xxxxxxxx"
-        self.packet.branch_id = "xxxxxxxx"
-        self.packet.ord_rej_reason = 4
-        self.packet.ord_cnfm_id = "xxxxxxxxxxxxxxxx"
-        self.packet.orig_ord_cnfm_id = "xxxxxxxxxxxxxxxx"
+        self.packet = Logon()
+        self.packet.sender_comp_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet.target_comp_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet.heart_bt_int = 2
+        self.packet.prtcl_version = "xxxxxxxx"
         self.packet.trade_date = 4
-        self.packet.transact_time = 8
-        self.packet.user_info = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        self.packet.q_size = 4
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Report()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestPlatformState(unittest.TestCase):
-    def setUp(self):
-        self.packet = PlatformState()
-        self.packet.platform_id = 2
-        self.packet.platform_state = 2
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = PlatformState()
+        decoded_packet = Logon()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
@@ -210,6 +103,31 @@ class TestNewOrderSingle(unittest.TestCase):
 
 
 
+class TestOrderCancel(unittest.TestCase):
+    def setUp(self):
+        self.packet = OrderCancel()
+        self.packet.biz_id = 4
+        self.packet.biz_pbu = "xxxxxxxx"
+        self.packet.cl_ord_id = "xxxxxxxxxx"
+        self.packet.security_id = "xxxxxxxxxxxx"
+        self.packet.account = "xxxxxxxxxxxxx"
+        self.packet.owner_type = 1
+        self.packet.side = "x"
+        self.packet.orig_cl_ord_id = "xxxxxxxxxx"
+        self.packet.transact_time = 8
+        self.packet.branch_id = "xxxxxxxx"
+        self.packet.user_info = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = OrderCancel()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
 class TestConfirm(unittest.TestCase):
     def setUp(self):
         self.packet = Confirm()
@@ -252,57 +170,70 @@ class TestConfirm(unittest.TestCase):
 
 
 
-class TestExecRptSync(unittest.TestCase):
+class TestCancelReject(unittest.TestCase):
     def setUp(self):
-        sub_exec_rpt_sync = SubExecRptSync()
-        sub_exec_rpt_sync.pbu = "xxxxxxxx"
-        sub_exec_rpt_sync.set_id = 4
-        sub_exec_rpt_sync.begin_report_index = 8
-        self.packet = ExecRptSync()
-        self.packet.sub_exec_rpt_sync = [sub_exec_rpt_sync]
-        
-
-    def test_encode_decode(self):
-        buf = ByteBuf()
-        self.packet.encode(buf)
-        decoded_packet = ExecRptSync()
-        decoded_packet.decode(buf)
-        self.assertEqual(decoded_packet, self.packet)
-
-
-
-class TestExecRptEndOfStream(unittest.TestCase):
-    def setUp(self):
-        self.packet = ExecRptEndOfStream()
+        self.packet = CancelReject()
         self.packet.pbu = "xxxxxxxx"
         self.packet.set_id = 4
-        self.packet.end_report_index = 8
+        self.packet.report_index = 8
+        self.packet.biz_id = 4
+        self.packet.biz_pbu = "xxxxxxxx"
+        self.packet.cl_ord_id = "xxxxxxxxxx"
+        self.packet.security_id = "xxxxxxxxxxxx"
+        self.packet.orig_cl_ord_id = "xxxxxxxxxx"
+        self.packet.branch_id = "xxxxxxxx"
+        self.packet.cxl_rej_reason = 4
+        self.packet.trade_date = 4
+        self.packet.transact_time = 8
+        self.packet.user_info = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = ExecRptEndOfStream()
+        decoded_packet = CancelReject()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
 
 
-class TestLogon(unittest.TestCase):
+class TestReport(unittest.TestCase):
     def setUp(self):
-        self.packet = Logon()
-        self.packet.sender_comp_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        self.packet.target_comp_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        self.packet.heart_bt_int = 2
-        self.packet.prtcl_version = "xxxxxxxx"
+        self.packet = Report()
+        self.packet.pbu = "xxxxxxxx"
+        self.packet.set_id = 4
+        self.packet.report_index = 8
+        self.packet.biz_id = 4
+        self.packet.exec_type = "x"
+        self.packet.biz_pbu = "xxxxxxxx"
+        self.packet.cl_ord_id = "xxxxxxxxxx"
+        self.packet.security_id = "xxxxxxxxxxxx"
+        self.packet.account = "xxxxxxxxxxxxx"
+        self.packet.owner_type = 1
+        self.packet.side = "x"
+        self.packet.price = 8
+        self.packet.order_qty = 8
+        self.packet.leaves_qty = 8
+        self.packet.cxl_qty = 8
+        self.packet.ord_type = "x"
+        self.packet.time_in_force = "x"
+        self.packet.ord_status = "x"
+        self.packet.credit_tag = "xx"
+        self.packet.orig_cl_ord_id = "xxxxxxxxxx"
+        self.packet.clearing_firm = "xxxxxxxx"
+        self.packet.branch_id = "xxxxxxxx"
+        self.packet.ord_rej_reason = 4
+        self.packet.ord_cnfm_id = "xxxxxxxxxxxxxxxx"
+        self.packet.orig_ord_cnfm_id = "xxxxxxxxxxxxxxxx"
         self.packet.trade_date = 4
-        self.packet.q_size = 4
+        self.packet.transact_time = 8
+        self.packet.user_info = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = Logon()
+        decoded_packet = Report()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
@@ -330,6 +261,58 @@ class TestOrderReject(unittest.TestCase):
 
 
 
+class TestPlatformState(unittest.TestCase):
+    def setUp(self):
+        self.packet = PlatformState()
+        self.packet.platform_id = 2
+        self.packet.platform_state = 2
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = PlatformState()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExecRptInfo(unittest.TestCase):
+    def setUp(self):
+        self.packet = ExecRptInfo()
+        self.packet.platform_id = 2
+        self.packet.pbu = ["xxxxxxxx"]
+        self.packet.set_id = [4]
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = ExecRptInfo()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExecRptSync(unittest.TestCase):
+    def setUp(self):
+        sub_exec_rpt_sync = SubExecRptSync()
+        sub_exec_rpt_sync.pbu = "xxxxxxxx"
+        sub_exec_rpt_sync.set_id = 4
+        sub_exec_rpt_sync.begin_report_index = 8
+        self.packet = ExecRptSync()
+        self.packet.sub_exec_rpt_sync = [sub_exec_rpt_sync]
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = ExecRptSync()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
 class TestExecRptSyncRsp(unittest.TestCase):
     def setUp(self):
         sub_exec_rpt_sync_rsp = SubExecRptSyncRsp()
@@ -347,6 +330,23 @@ class TestExecRptSyncRsp(unittest.TestCase):
         buf = ByteBuf()
         self.packet.encode(buf)
         decoded_packet = ExecRptSyncRsp()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
+class TestExecRptEndOfStream(unittest.TestCase):
+    def setUp(self):
+        self.packet = ExecRptEndOfStream()
+        self.packet.pbu = "xxxxxxxx"
+        self.packet.set_id = 4
+        self.packet.end_report_index = 8
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = ExecRptEndOfStream()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
