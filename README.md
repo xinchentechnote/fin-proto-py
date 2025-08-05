@@ -79,3 +79,5 @@ To add new protocols:
 1. Add the protocol definition file to `submodules/fin-proto/`
 2. Update the `compile` target in [Makefile](file:///home/s0596/workspace/fin-proto-py/Makefile) with the new protocol
 3. Run `make compile` to generate the Python implementation
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/xinchentechnote/fin-proto-py)
