@@ -14,11 +14,13 @@ class SseBinary(BinaryCodec):
     def encode(self, buffer: ByteBuf):
         buffer.write_u32(self.msg_type)
         buffer.write_u64(self.msg_seq_num)
-        body_buf = ByteBuf()
-        self.body.encode(body_buf)
-        self.msg_body_len = body_buf.readable_bytes_len()
-        buffer.write_u32(self.msg_body_len)
-        buffer.write_bytes(body_buf.to_bytes())
+        msg_body_len_pos = buffer.write_index
+        buffer.write_u32(0)
+        body_start = buffer.write_index
+        self.body.encode(buffer)
+        body_end = buffer.write_index
+        self.msg_body_len = body_end - body_start
+        buffer.write_u32_at(msg_body_len_pos, self.msg_body_len)
         service = create_checksum_service("SSE_BIN")
         if service :
             self.checksum = service.calc(buffer)

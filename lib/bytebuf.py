@@ -235,66 +235,142 @@ class ByteBuf(Buf):
     def write_i8(self, value: int):
         self.buf += struct.pack(Buf.SIGNED_CHAR, value)
         self.write_index += 1
+        
+    def write_i8_at(self, pos: int, value: int):
+        if pos + 1 > len(self.buf):
+            raise IndexError("Position out of bounds for write_i8_at")
+        struct.pack_into(self.SIGNED_CHAR, self.buf, pos, value)
 
     def write_u8(self, value: int):
         self.buf += struct.pack(Buf.UNSIGNED_CHAR, value)
         self.write_index += 1
+    
+    def write_u8_at(self, pos: int, value: int):
+        if pos + 1 > len(self.buf):
+            raise IndexError("Position out of bounds for write_u8_at")
+        struct.pack_into(self.UNSIGNED_CHAR, self.buf, pos, value)
 
     def write_bool(self, value: bool):
         self.buf += struct.pack(Buf.BOOLEAN, value)
         self.write_index += 1
+        
+    def write_bool_at(self, pos: int, value: bool):
+        if pos + 1 > len(self.buf):
+            raise IndexError("Position out of bounds for write_bool_at")
+        struct.pack_into(self.BOOLEAN, self.buf, pos, value)
 
     def write_i16(self, value: int):
         self.buf += struct.pack(Buf.ByteOrder.BIG_ENDIAN + Buf.SHORT, value)
         self.write_index += 2
+        
+    def write_i16_at(self, pos: int, value: int):
+        if pos + 2 > len(self.buf):
+            raise IndexError("Position out of bounds for write_i16_at")
+        struct.pack_into(self.ByteOrder.BIG_ENDIAN + self.SHORT, self.buf, pos, value)
 
     def write_i16_le(self, value: int):
         self.buf += struct.pack(Buf.ByteOrder.LITTLE_ENDIAN + Buf.SHORT, value)
         self.write_index += 2
+        
+    def write_i16_le_at(self, pos: int, value: int):
+        if pos + 2 > len(self.buf):
+            raise IndexError("Position out of bounds for write_i16_le_at")
+        struct.pack_into(self.ByteOrder.LITTLE_ENDIAN + self.SHORT, self.buf, pos, value)
 
     def write_u16(self, value: int):
         self.buf += struct.pack(Buf.ByteOrder.BIG_ENDIAN + Buf.UNSIGNED_SHORT, value)
         self.write_index += 2
+        
+    def write_u16_at(self, pos: int, value: int):
+        if pos + 2 > len(self.buf):
+            raise IndexError("Position out of bounds for write_u16_at")
+        struct.pack_into(self.ByteOrder.BIG_ENDIAN + self.UNSIGNED_SHORT, self.buf, pos, value)
+
 
     def write_u16_le(self, value: int):
         self.buf += struct.pack(Buf.ByteOrder.LITTLE_ENDIAN + Buf.UNSIGNED_SHORT, value)
         self.write_index += 2
+        
+    def write_u16_le_at(self, pos: int, value: int):
+        if pos + 2 > len(self.buf):
+            raise IndexError("Position out of bounds for write_u16_le_at")
+        struct.pack_into(self.ByteOrder.LITTLE_ENDIAN + self.UNSIGNED_SHORT, self.buf, pos, value)
 
     def write_i32(self, value: int):
         self.buf += struct.pack(Buf.ByteOrder.BIG_ENDIAN + Buf.INT, value)
         self.write_index += 4
+    
+    def write_i32_at(self, pos: int, value: int):
+        if pos + 4 > len(self.buf):
+            raise IndexError("Position out of bounds for write_i32_at")
+        struct.pack_into(self.ByteOrder.BIG_ENDIAN + self.INT, self.buf, pos, value)
 
     def write_i32_le(self, value: int):
         self.buf += struct.pack(Buf.ByteOrder.LITTLE_ENDIAN + Buf.INT, value)
         self.write_index += 4
 
+    def write_i32_le_at(self, pos: int, value: int):
+        if pos + 4 > len(self.buf):
+            raise IndexError("Position out of bounds for write_i32_le_at")
+        struct.pack_into(self.ByteOrder.LITTLE_ENDIAN + self.INT, self.buf, pos, value)
+
     def write_u32(self, value: int):
         self.buf += struct.pack(Buf.ByteOrder.BIG_ENDIAN + Buf.UNSIGNED_INT, value)
         self.write_index += 4
+    
+    def write_u32_at(self, pos: int, value: int):
+        if pos + 4 > len(self.buf):
+            raise IndexError("Position out of bounds for write_u32_at")
+        struct.pack_into(self.ByteOrder.BIG_ENDIAN + self.UNSIGNED_INT, self.buf, pos, value)
 
     def write_u32_le(self, value: int):
         self.buf += struct.pack(Buf.ByteOrder.LITTLE_ENDIAN + Buf.UNSIGNED_INT, value)
         self.write_index += 4
+        
+    def write_u32_le_at(self, pos: int, value: int):
+        if pos + 4 > len(self.buf):
+            raise IndexError("Position out of bounds for write_u32_le_at")
+        struct.pack_into(self.ByteOrder.LITTLE_ENDIAN + self.UNSIGNED_INT, self.buf, pos, value)
 
     def write_i64(self, value: longlong):
         self.buf += struct.pack(Buf.ByteOrder.BIG_ENDIAN + Buf.LONG_LONG, value)
         self.write_index += 8
+        
+    def write_i64_at(self, pos: int, value: longlong):
+        if pos + 8 > len(self.buf):
+            raise IndexError("Position out of bounds for write_i64_at")
+        struct.pack_into(self.ByteOrder.BIG_ENDIAN + self.LONG_LONG, self.buf, pos, value)
 
     def write_i64_le(self, value: longlong):
         self.buf += struct.pack(Buf.ByteOrder.LITTLE_ENDIAN + Buf.LONG_LONG, value)
         self.write_index += 8
+    
+    def write_i64_le_at(self, pos: int, value: longlong):
+        if pos + 8 > len(self.buf):
+            raise IndexError("Position out of bounds for write_i64_at")
+        struct.pack_into(self.ByteOrder.LITTLE_ENDIAN + self.LONG_LONG, self.buf, pos, value)
 
     def write_u64(self, value: longlong):
         self.buf += struct.pack(
             Buf.ByteOrder.BIG_ENDIAN + Buf.UNSIGNED_LONG_LONG, value
         )
         self.write_index += 8
+        
+    def write_u64_at(self, pos: int, value: longlong):
+        if pos + 8 > len(self.buf):
+            raise IndexError("Position out of bounds for write_u64_at")
+        struct.pack_into(self.ByteOrder.BIG_ENDIAN + self.UNSIGNED_LONG_LONG, self.buf, pos, value)
 
     def write_u64_le(self, value: longlong):
         self.buf += struct.pack(
             Buf.ByteOrder.LITTLE_ENDIAN + Buf.UNSIGNED_LONG_LONG, value
         )
         self.write_index += 8
+        
+    def write_u64_le_at(self, pos: int, value: longlong):
+        if pos + 8 > len(self.buf):
+            raise IndexError("Position out of bounds for write_u64_le_at")
+        struct.pack_into(self.ByteOrder.LITTLE_ENDIAN + self.UNSIGNED_LONG_LONG, self.buf, pos, value)
 
     def write_f32(self, value: float):
         self.buf += struct.pack(Buf.ByteOrder.BIG_ENDIAN + Buf.FLOAT, value)
