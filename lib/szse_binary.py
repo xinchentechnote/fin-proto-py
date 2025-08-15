@@ -12,11 +12,13 @@ class SzseBinary(BinaryCodec):
     
     def encode(self, buffer: ByteBuf):
         buffer.write_u32(self.msg_type)
-        body_buf = ByteBuf()
-        self.body.encode(body_buf)
-        self.body_length = body_buf.readable_bytes_len()
-        buffer.write_u32(self.body_length)
-        buffer.write_bytes(body_buf.to_bytes())
+        body_length_pos = buffer.write_index
+        buffer.write_u32(0)
+        body_start = buffer.write_index
+        self.body.encode(buffer)
+        body_end = buffer.write_index
+        self.body_length = body_end - body_start
+        buffer.write_u32_at(body_length_pos, self.body_length)
         service = create_checksum_service("SZSE_BIN")
         if service :
             self.checksum = service.calc(buffer)
