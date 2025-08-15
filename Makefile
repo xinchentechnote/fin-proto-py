@@ -19,7 +19,7 @@ compile:
 	@echo "Compiling protocol..."
 	$(BIN_DIR)/fin-protoc -f ./submodules/fin-proto/bse/bse_trade_bin_v0.9.pdsl -p $(OUTPUT_DIR)
 	$(BIN_DIR)/fin-protoc -f ./submodules/fin-proto/sample/sample.pdsl -p $(OUTPUT_DIR)
-	$(BIN_DIR)/fin-protoc -f ./submodules/fin-proto/risk/risk_v0.1.0.dsl -p $(OUTPUT_DIR)
+	$(BIN_DIR)/fin-protoc -f ./submodules/fin-proto/risk/risk_v0.1.0.pdsl -p $(OUTPUT_DIR)
 	$(BIN_DIR)/fin-protoc -f ./submodules/fin-proto/sse/binary/sse_bin_v0.57.pdsl -p $(OUTPUT_DIR)
 	$(BIN_DIR)/fin-protoc -f ./submodules/fin-proto/szse/binary/szse_bin_v1.29.pdsl -p $(OUTPUT_DIR)
 
