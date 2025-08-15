@@ -12,11 +12,13 @@ class RootPacket(BinaryCodec):
     
     def encode(self, buffer: ByteBuf):
         buffer.write_u16_le(self.msg_type)
-        payload_buf = ByteBuf()
-        self.payload.encode(payload_buf)
-        self.payload_len = payload_buf.readable_bytes_len()
-        buffer.write_u32_le(self.payload_len)
-        buffer.write_bytes(payload_buf.to_bytes())
+        payload_len_pos = buffer.write_index
+        buffer.write_u32_le(0)
+        payload_start = buffer.write_index
+        self.payload.encode(buffer)
+        payload_end = buffer.write_index
+        self.payload_len = payload_end - payload_start
+        buffer.write_u32_le_at(payload_len_pos, self.payload_len)
         service = create_checksum_service("CRC32")
         if service :
             self.checksum = service.calc(buffer)
