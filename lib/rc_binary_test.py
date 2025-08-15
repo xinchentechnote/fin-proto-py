@@ -3,9 +3,37 @@ import unittest
 
 from rc_binary import *
 
+class TestRcBinary(unittest.TestCase):
+    def setUp(self):
+        body = NewOrder()
+        body.unique_order_id = "hello"
+        body.cl_ord_id = "hello"
+        body.security_id = "hello"
+        body.side = "x"
+        body.price = 8
+        body.order_qty = 8
+        body.ord_type = "x"
+        body.account = "hello"
+        self.packet = RcBinary()
+        self.packet.version = 4
+        self.packet.msg_body_len = 4
+        self.packet.msg_type = 100101
+        self.packet.body = body
+        
+
+    def test_encode_decode(self):
+        buf = ByteBuf()
+        self.packet.encode(buf)
+        decoded_packet = RcBinary()
+        decoded_packet.decode(buf)
+        self.assertEqual(decoded_packet, self.packet)
+
+
+
 class TestNewOrder(unittest.TestCase):
     def setUp(self):
         self.packet = NewOrder()
+        self.packet.unique_order_id = "hello"
         self.packet.cl_ord_id = "hello"
         self.packet.security_id = "hello"
         self.packet.side = "x"
@@ -27,6 +55,8 @@ class TestNewOrder(unittest.TestCase):
 class TestOrderConfirm(unittest.TestCase):
     def setUp(self):
         self.packet = OrderConfirm()
+        self.packet.unique_order_id = "hello"
+        self.packet.unique_orig_order_id = "hello"
         self.packet.cl_ord_id = "hello"
         self.packet.exec_type = "x"
         self.packet.ord_rej_reason = 4
@@ -45,6 +75,7 @@ class TestOrderConfirm(unittest.TestCase):
 class TestExecutionReport(unittest.TestCase):
     def setUp(self):
         self.packet = ExecutionReport()
+        self.packet.unique_order_id = "hello"
         self.packet.cl_ord_id = "hello"
         self.packet.ord_cnfm_id = "hello"
         self.packet.last_px = 8
@@ -64,6 +95,8 @@ class TestExecutionReport(unittest.TestCase):
 class TestOrderCancel(unittest.TestCase):
     def setUp(self):
         self.packet = OrderCancel()
+        self.packet.unique_order_id = "hello"
+        self.packet.unique_orig_order_id = "hello"
         self.packet.cl_ord_id = "hello"
         self.packet.orig_cl_ord_id = "hello"
         self.packet.security_id = "hello"
@@ -81,6 +114,8 @@ class TestOrderCancel(unittest.TestCase):
 class TestCancelReject(unittest.TestCase):
     def setUp(self):
         self.packet = CancelReject()
+        self.packet.unique_order_id = "hello"
+        self.packet.unique_orig_order_id = "hello"
         self.packet.cl_ord_id = "hello"
         self.packet.orig_cl_ord_id = "hello"
         self.packet.cxl_rej_reason = 4
@@ -95,27 +130,18 @@ class TestCancelReject(unittest.TestCase):
 
 
 
-class TestRcBinary(unittest.TestCase):
+class TestRiskResult(unittest.TestCase):
     def setUp(self):
-        body = NewOrder()
-        body.cl_ord_id = "hello"
-        body.security_id = "hello"
-        body.side = "x"
-        body.price = 8
-        body.order_qty = 8
-        body.ord_type = "x"
-        body.account = "hello"
-        self.packet = RcBinary()
-        self.packet.version = 4
-        self.packet.msg_body_len = 4
-        self.packet.msg_type = 100101
-        self.packet.body = body
+        self.packet = RiskResult()
+        self.packet.unique_order_id = "hello"
+        self.packet.risk_status = 1
+        self.packet.risk_reason = "hello"
         
 
     def test_encode_decode(self):
         buf = ByteBuf()
         self.packet.encode(buf)
-        decoded_packet = RcBinary()
+        decoded_packet = RiskResult()
         decoded_packet.decode(buf)
         self.assertEqual(decoded_packet, self.packet)
 
