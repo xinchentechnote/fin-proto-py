@@ -860,7 +860,7 @@ class SseBinary(BinaryCodec):
         self.msg_type = buffer.read_u32()
         self.msg_seq_num = buffer.read_u64()
         self.msg_body_len = buffer.read_u32()
-        self.body == sseBinaryMessageFactory.create(self.msg_type)
+        self.body = sseBinaryMessageFactory.create(self.msg_type)
         self.body.decode(buffer)
         self.checksum = buffer.read_u32()
     

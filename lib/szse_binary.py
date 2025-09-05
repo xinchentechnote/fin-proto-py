@@ -691,7 +691,7 @@ class NewOrder(BinaryCodec):
         self.ord_type = buffer.read_bytes(1).decode('utf-8').strip('\x00')
         self.order_qty = buffer.read_i64()
         self.price = buffer.read_i64()
-        self.appl_extend == newOrderMessageFactory.create(self.appl_id)
+        self.appl_extend = newOrderMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -1464,7 +1464,7 @@ class ExecutionConfirm(BinaryCodec):
         self.account_id = buffer.read_bytes(12).decode('utf-8').strip('\x00')
         self.branch_id = buffer.read_bytes(4).decode('utf-8').strip('\x00')
         self.order_restrictions = buffer.read_bytes(4).decode('utf-8').strip('\x00')
-        self.appl_extend == executionConfirmMessageFactory.create(self.appl_id)
+        self.appl_extend = executionConfirmMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -2100,7 +2100,7 @@ class ExecutionReport(BinaryCodec):
         self.side = buffer.read_bytes(1).decode('utf-8').strip('\x00')
         self.account_id = buffer.read_bytes(12).decode('utf-8').strip('\x00')
         self.branch_id = buffer.read_bytes(4).decode('utf-8').strip('\x00')
-        self.appl_extend == executionReportMessageFactory.create(self.appl_id)
+        self.appl_extend = executionReportMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -2712,7 +2712,7 @@ class SzseBinary(BinaryCodec):
     def decode(self, buffer: ByteBuf):
         self.msg_type = buffer.read_u32()
         self.body_length = buffer.read_u32()
-        self.body == szseBinaryMessageFactory.create(self.msg_type)
+        self.body = szseBinaryMessageFactory.create(self.msg_type)
         self.body.decode(buffer)
         self.checksum = buffer.read_i32()
     
