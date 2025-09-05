@@ -15,3 +15,10 @@ def test_message_factory():
     assert factory1 is factory2  # Singleton behavior
     message = factory1.create("DUMMY")
     assert isinstance(message, DummyMessage)
+    
+    factory1.remove("DUMMY")
+    try:
+        factory1.create("DUMMY")
+        assert False, "Expected ValueError for unregistered message type"
+    except ValueError:
+        pass
