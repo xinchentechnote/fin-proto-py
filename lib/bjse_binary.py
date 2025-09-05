@@ -335,7 +335,7 @@ class NewOrder(BinaryCodec):
         self.ord_type = buffer.read_bytes(1).decode('utf-8').strip('\x00')
         self.order_qty = buffer.read_i64_le()
         self.price = buffer.read_i64_le()
-        self.appl_extend == newOrderMessageFactory.create(self.appl_id)
+        self.appl_extend = newOrderMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -823,7 +823,7 @@ class ExecutionConfirm(BinaryCodec):
         self.account_id = buffer.read_bytes(10).decode('utf-8').strip('\x00')
         self.branch_id = buffer.read_bytes(2).decode('utf-8').strip('\x00')
         self.order_restrictions = buffer.read_bytes(4).decode('utf-8').strip('\x00')
-        self.appl_extend == executionConfirmMessageFactory.create(self.appl_id)
+        self.appl_extend = executionConfirmMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -1041,7 +1041,7 @@ class ExecutionReport(BinaryCodec):
         self.side = buffer.read_bytes(1).decode('utf-8').strip('\x00')
         self.account_id = buffer.read_bytes(10).decode('utf-8').strip('\x00')
         self.branch_id = buffer.read_bytes(2).decode('utf-8').strip('\x00')
-        self.appl_extend == executionReportMessageFactory.create(self.appl_id)
+        self.appl_extend = executionReportMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -1213,7 +1213,7 @@ class Quote(BinaryCodec):
         self.offer_px = buffer.read_i64_le()
         self.bid_size = buffer.read_i64_le()
         self.offer_size = buffer.read_i64_le()
-        self.appl_extend == quoteMessageFactory.create(self.appl_id)
+        self.appl_extend = quoteMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -1419,7 +1419,7 @@ class QuoteStatusReport(BinaryCodec):
         self.offer_px = buffer.read_i64_le()
         self.bid_size = buffer.read_i64_le()
         self.offer_size = buffer.read_i64_le()
-        self.appl_extend == quoteStatusReportMessageFactory.create(self.appl_id)
+        self.appl_extend = quoteStatusReportMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -1580,7 +1580,7 @@ class QuoteResponse(BinaryCodec):
             _quote_2.decode(buffer)
             self.quote_2.append(_quote_2)
         
-        self.appl_extend == quoteResponseMessageFactory.create(self.appl_id)
+        self.appl_extend = quoteResponseMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -1732,7 +1732,7 @@ class AllegeQuote(BinaryCodec):
         self.valid_until_time = buffer.read_i64_le()
         self.price_type = buffer.read_u8()
         self.memo = buffer.read_bytes(120).decode('utf-8').strip('\x00')
-        self.appl_extend == allegeQuoteMessageFactory.create(self.appl_id)
+        self.appl_extend = allegeQuoteMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -2104,7 +2104,7 @@ class TradeCaptureReport(BinaryCodec):
         self.counter_party_pbuid = buffer.read_bytes(6).decode('utf-8').strip('\x00')
         self.counter_party_account_id = buffer.read_bytes(10).decode('utf-8').strip('\x00')
         self.counter_party_branch_id = buffer.read_bytes(2).decode('utf-8').strip('\x00')
-        self.appl_extend == tradeCaptureReportMessageFactory.create(self.appl_id)
+        self.appl_extend = tradeCaptureReportMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -2394,7 +2394,7 @@ class TradeCaptureReportAck(BinaryCodec):
         self.counter_party_pbuid = buffer.read_bytes(6).decode('utf-8').strip('\x00')
         self.counter_party_account_id = buffer.read_bytes(10).decode('utf-8').strip('\x00')
         self.counter_party_branch_id = buffer.read_bytes(2).decode('utf-8').strip('\x00')
-        self.appl_extend == tradeCaptureReportAckMessageFactory.create(self.appl_id)
+        self.appl_extend = tradeCaptureReportAckMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -2684,7 +2684,7 @@ class TradeCaptureConfirm(BinaryCodec):
         self.counter_party_pbuid = buffer.read_bytes(6).decode('utf-8').strip('\x00')
         self.counter_party_account_id = buffer.read_bytes(10).decode('utf-8').strip('\x00')
         self.counter_party_branch_id = buffer.read_bytes(2).decode('utf-8').strip('\x00')
-        self.appl_extend == tradeCaptureConfirmMessageFactory.create(self.appl_id)
+        self.appl_extend = tradeCaptureConfirmMessageFactory.create(self.appl_id)
         self.appl_extend.decode(buffer)
     
     def __eq__(self, other):
@@ -3028,7 +3028,7 @@ class BjseBinary(BinaryCodec):
     def decode(self, buffer: ByteBuf):
         self.msg_type = buffer.read_u32_le()
         self.body_length = buffer.read_u32_le()
-        self.body == bjseBinaryMessageFactory.create(self.msg_type)
+        self.body = bjseBinaryMessageFactory.create(self.msg_type)
         self.body.decode(buffer)
         self.checksum = buffer.read_u32_le()
     
