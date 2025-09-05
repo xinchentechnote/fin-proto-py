@@ -2,54 +2,9 @@
 from bytebuf import ByteBuf
 from checksum import create_checksum_service
 from codec import *
+from lib.message_factory import MessageFactory
 
-class RcBinary(BinaryCodec):
-    def __init__(self):
-        self.msg_type = 0
-        self.version = 0
-        self.msg_body_len = 0
-        self.body = None
-    
-    def encode(self, buffer: ByteBuf):
-        buffer.write_u32(self.msg_type)
-        buffer.write_u32(self.version)
-        msg_body_len_pos = buffer.write_index
-        buffer.write_u32(0)
-        body_start = buffer.write_index
-        self.body.encode(buffer)
-        body_end = buffer.write_index
-        self.msg_body_len = body_end - body_start
-        buffer.write_u32_at(msg_body_len_pos, self.msg_body_len)
-    
-    def decode(self, buffer: ByteBuf):
-        self.msg_type = buffer.read_u32()
-        self.version = buffer.read_u32()
-        self.msg_body_len = buffer.read_u32()
-        if self.msg_type == 100101:
-            self.body = NewOrder()
-        if self.msg_type == 200102:
-            self.body = OrderConfirm()
-        if self.msg_type == 200115:
-            self.body = ExecutionReport()
-        if self.msg_type == 190007:
-            self.body = OrderCancel()
-        if self.msg_type == 290008:
-            self.body = CancelReject()
-        if self.msg_type == 800001:
-            self.body = RiskResult()
-        self.body.decode(buffer)
-    
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        return all([
-            self.msg_type == other.msg_type,
-            self.version == other.version,
-            self.msg_body_len == other.msg_body_len,
-            self.body == other.body
-        ])
-        
-    
+class RcBinaryMessageFactory(MessageFactory[int, BinaryCodec]): ...
 
 
 class NewOrder(BinaryCodec):
@@ -278,5 +233,48 @@ class RiskResult(BinaryCodec):
         ])
         
     
+factory = RcBinaryMessageFactory()
+factory.register(100101, NewOrder)
+factory.register(200102, OrderConfirm)
+factory.register(200115, ExecutionReport)
+factory.register(190007, OrderCancel)
+factory.register(290008, CancelReject)
+factory.register(800001, RiskResult)
 
+class RcBinary(BinaryCodec):
+    def __init__(self):
+        self.msg_type = 0
+        self.version = 0
+        self.msg_body_len = 0
+        self.body = None
+    
+    def encode(self, buffer: ByteBuf):
+        buffer.write_u32(self.msg_type)
+        buffer.write_u32(self.version)
+        msg_body_len_pos = buffer.write_index
+        buffer.write_u32(0)
+        body_start = buffer.write_index
+        self.body.encode(buffer)
+        body_end = buffer.write_index
+        self.msg_body_len = body_end - body_start
+        buffer.write_u32_at(msg_body_len_pos, self.msg_body_len)
+    
+    def decode(self, buffer: ByteBuf):
+        self.msg_type = buffer.read_u32()
+        self.version = buffer.read_u32()
+        self.msg_body_len = buffer.read_u32()
+        self.body = factory.create(self.msg_type)
+        self.body.decode(buffer)
+    
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return all([
+            self.msg_type == other.msg_type,
+            self.version == other.version,
+            self.msg_body_len == other.msg_body_len,
+            self.body == other.body
+        ])
+        
+    
 
