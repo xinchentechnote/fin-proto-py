@@ -19,6 +19,10 @@ class MessageFactory(Generic[T, M],metaclass=SingleMeta):
     def register(self, msg_type:T, cls:Type[M]):
         self._creators[msg_type] = cls
     
+    def remove(self, msg_type:T):
+        if msg_type in self._creators:
+            del self._creators[msg_type]
+    
     def create(self, msg_type:T) -> M:
         cls = self._creators.get(msg_type)
         if not cls:
