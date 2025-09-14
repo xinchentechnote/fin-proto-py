@@ -433,21 +433,19 @@ class Report(BinaryCodec):
         self.security_id = ''
         self.account = ''
         self.owner_type = 0
+        self.order_entry_time = 0
+        self.last_px = 0
+        self.last_qty = 0
+        self.gross_trade_amt = 0
         self.side = ''
-        self.price = 0
         self.order_qty = 0
         self.leaves_qty = 0
-        self.cxl_qty = 0
-        self.ord_type = ''
-        self.time_in_force = ''
         self.ord_status = ''
         self.credit_tag = ''
-        self.orig_cl_ord_id = ''
         self.clearing_firm = ''
         self.branch_id = ''
-        self.ord_rej_reason = 0
+        self.trd_cnfm_id = ''
         self.ord_cnfm_id = ''
-        self.orig_ord_cnfm_id = ''
         self.trade_date = 0
         self.transact_time = 0
         self.user_info = ''
@@ -463,21 +461,19 @@ class Report(BinaryCodec):
         write_fixed_string(buffer, self.security_id, 12)
         write_fixed_string(buffer, self.account, 13)
         buffer.write_u8(self.owner_type)
+        buffer.write_u64(self.order_entry_time)
+        buffer.write_i64(self.last_px)
+        buffer.write_i64(self.last_qty)
+        buffer.write_i64(self.gross_trade_amt)
         write_fixed_string(buffer, self.side, 1)
-        buffer.write_i64(self.price)
         buffer.write_i64(self.order_qty)
         buffer.write_i64(self.leaves_qty)
-        buffer.write_i64(self.cxl_qty)
-        write_fixed_string(buffer, self.ord_type, 1)
-        write_fixed_string(buffer, self.time_in_force, 1)
         write_fixed_string(buffer, self.ord_status, 1)
         write_fixed_string(buffer, self.credit_tag, 2)
-        write_fixed_string(buffer, self.orig_cl_ord_id, 10)
         write_fixed_string(buffer, self.clearing_firm, 8)
         write_fixed_string(buffer, self.branch_id, 8)
-        buffer.write_u32(self.ord_rej_reason)
+        write_fixed_string(buffer, self.trd_cnfm_id, 16)
         write_fixed_string(buffer, self.ord_cnfm_id, 16)
-        write_fixed_string(buffer, self.orig_ord_cnfm_id, 16)
         buffer.write_u32(self.trade_date)
         buffer.write_u64(self.transact_time)
         write_fixed_string(buffer, self.user_info, 32)
@@ -493,21 +489,19 @@ class Report(BinaryCodec):
         self.security_id = buffer.read_bytes(12).decode('utf-8').strip('\x00')
         self.account = buffer.read_bytes(13).decode('utf-8').strip('\x00')
         self.owner_type = buffer.read_u8()
+        self.order_entry_time = buffer.read_u64()
+        self.last_px = buffer.read_i64()
+        self.last_qty = buffer.read_i64()
+        self.gross_trade_amt = buffer.read_i64()
         self.side = buffer.read_bytes(1).decode('utf-8').strip('\x00')
-        self.price = buffer.read_i64()
         self.order_qty = buffer.read_i64()
         self.leaves_qty = buffer.read_i64()
-        self.cxl_qty = buffer.read_i64()
-        self.ord_type = buffer.read_bytes(1).decode('utf-8').strip('\x00')
-        self.time_in_force = buffer.read_bytes(1).decode('utf-8').strip('\x00')
         self.ord_status = buffer.read_bytes(1).decode('utf-8').strip('\x00')
         self.credit_tag = buffer.read_bytes(2).decode('utf-8').strip('\x00')
-        self.orig_cl_ord_id = buffer.read_bytes(10).decode('utf-8').strip('\x00')
         self.clearing_firm = buffer.read_bytes(8).decode('utf-8').strip('\x00')
         self.branch_id = buffer.read_bytes(8).decode('utf-8').strip('\x00')
-        self.ord_rej_reason = buffer.read_u32()
+        self.trd_cnfm_id = buffer.read_bytes(16).decode('utf-8').strip('\x00')
         self.ord_cnfm_id = buffer.read_bytes(16).decode('utf-8').strip('\x00')
-        self.orig_ord_cnfm_id = buffer.read_bytes(16).decode('utf-8').strip('\x00')
         self.trade_date = buffer.read_u32()
         self.transact_time = buffer.read_u64()
         self.user_info = buffer.read_bytes(32).decode('utf-8').strip('\x00')
@@ -526,21 +520,19 @@ class Report(BinaryCodec):
             self.security_id == other.security_id,
             self.account == other.account,
             self.owner_type == other.owner_type,
+            self.order_entry_time == other.order_entry_time,
+            self.last_px == other.last_px,
+            self.last_qty == other.last_qty,
+            self.gross_trade_amt == other.gross_trade_amt,
             self.side == other.side,
-            self.price == other.price,
             self.order_qty == other.order_qty,
             self.leaves_qty == other.leaves_qty,
-            self.cxl_qty == other.cxl_qty,
-            self.ord_type == other.ord_type,
-            self.time_in_force == other.time_in_force,
             self.ord_status == other.ord_status,
             self.credit_tag == other.credit_tag,
-            self.orig_cl_ord_id == other.orig_cl_ord_id,
             self.clearing_firm == other.clearing_firm,
             self.branch_id == other.branch_id,
-            self.ord_rej_reason == other.ord_rej_reason,
+            self.trd_cnfm_id == other.trd_cnfm_id,
             self.ord_cnfm_id == other.ord_cnfm_id,
-            self.orig_ord_cnfm_id == other.orig_ord_cnfm_id,
             self.trade_date == other.trade_date,
             self.transact_time == other.transact_time,
             self.user_info == other.user_info

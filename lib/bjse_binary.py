@@ -3016,13 +3016,9 @@ class BjseBinary(BinaryCodec):
     
     def encode(self, buffer: ByteBuf):
         buffer.write_u32_le(self.msg_type)
-        body_length_pos = buffer.write_index
-        buffer.write_u32_le(0)
-        body_start = buffer.write_index
-        self.body.encode(buffer)
-        body_end = buffer.write_index
-        self.body_length = body_end - body_start
-        buffer.write_u32_le_at(body_length_pos, self.body_length)
+        buffer.write_u32_le(self.body_length)
+        if self.body is not None:
+            self.body.encode(buffer)
         buffer.write_u32_le(self.checksum)
     
     def decode(self, buffer: ByteBuf):
