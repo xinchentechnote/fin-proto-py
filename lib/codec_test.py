@@ -74,7 +74,7 @@ class TestBufferUtils(unittest.TestCase):
     def test_write_short_string_padded(self):
         """Test writing a string shorter than the fixed length (should be padded)."""
         write_fixed_string(self.buffer, "Hi", 5)  # "Hi" is 2 bytes, padded to 5
-        self.assertEqual(self.buffer.read_bytes(5), b'Hi\x00\x00\x00')
+        self.assertEqual(self.buffer.read_bytes(5), b'Hi   ')
 
     def test_write_long_string_truncated(self):
         """Test writing a string longer than the fixed length (should be truncated)."""
@@ -84,12 +84,12 @@ class TestBufferUtils(unittest.TestCase):
     def test_write_empty_string(self):
         """Test writing an empty string (should be padded)."""
         write_fixed_string(self.buffer, "", 3)
-        self.assertEqual(self.buffer.read_bytes(3), b'\x00\x00\x00')
+        self.assertEqual(self.buffer.read_bytes(3), b'   ')
 
     def test_custom_padding(self):
         """Test writing with custom padding (space instead of null byte)."""
-        write_fixed_string(self.buffer, "AB", 5, padding=b' ')
-        self.assertEqual(self.buffer.read_bytes(5), b'AB   ')
+        write_fixed_string(self.buffer, "AB", 5, padding='0')
+        self.assertEqual(self.buffer.read_bytes(5), b'AB000')
 
 
 if __name__ == '__main__':
