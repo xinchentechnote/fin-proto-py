@@ -153,3 +153,19 @@ def write_fixed_string(buffer: ByteBuf, string: str, fixed_length: int, encoding
     else:
         padded = encoded.ljust(fixed_length, padding.encode(encoding))
     buffer.write_bytes(padded)
+    
+def get_fixed_string(buffer: ByteBuf, fixed_length: int, encoding: str = 'utf-8', trim_padding: str = ' ', from_left: bool = False) -> str:
+    """Read a fixed-length string from the buffer.
+    
+    Args:
+        buffer: The buffer to read from
+        fixed_length: The fixed byte length to read
+        encoding: The string encoding (default: 'utf-8')
+        trim_padding: The byte used for trimming padding (default: null byte)
+        from_left: Whether to trim padding from the left (default: False)
+    """
+    raw_bytes = buffer.read_bytes(fixed_length)
+    if from_left:
+        return raw_bytes.decode(encoding).rstrip(trim_padding)
+    else:
+        return raw_bytes.decode(encoding).lstrip(trim_padding)

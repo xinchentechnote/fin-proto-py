@@ -19,20 +19,20 @@ class NewOrder(BinaryCodec):
         put_string(buffer, self.unique_order_id, 'u32')
         put_string(buffer, self.cl_ord_id, 'u32')
         put_string(buffer, self.security_id, 'u32')
-        write_fixed_string(buffer, self.side, 1)
+        write_fixed_string(buffer, self.side, 1, 'utf-8')
         buffer.write_u64(self.price)
         buffer.write_u64(self.order_qty)
-        write_fixed_string(buffer, self.ord_type, 1)
+        write_fixed_string(buffer, self.ord_type, 1, 'utf-8')
         put_string(buffer, self.account, 'u32')
     
     def decode(self, buffer: ByteBuf):
         self.unique_order_id = get_string(buffer,'u32')
         self.cl_ord_id = get_string(buffer,'u32')
         self.security_id = get_string(buffer,'u32')
-        self.side = buffer.read_bytes(1).decode('utf-8').strip('\x00')
+        self.side = get_fixed_string(buffer, 1, 'utf-8')
         self.price = buffer.read_u64()
         self.order_qty = buffer.read_u64()
-        self.ord_type = buffer.read_bytes(1).decode('utf-8').strip('\x00')
+        self.ord_type = get_fixed_string(buffer, 1, 'utf-8')
         self.account = get_string(buffer,'u32')
     
     def __eq__(self, other):
@@ -65,7 +65,7 @@ class OrderConfirm(BinaryCodec):
         put_string(buffer, self.unique_order_id, 'u32')
         put_string(buffer, self.unique_orig_order_id, 'u32')
         put_string(buffer, self.cl_ord_id, 'u32')
-        write_fixed_string(buffer, self.exec_type, 1)
+        write_fixed_string(buffer, self.exec_type, 1, 'utf-8')
         buffer.write_u32(self.ord_rej_reason)
         put_string(buffer, self.ord_cnfm_id, 'u32')
     
@@ -73,7 +73,7 @@ class OrderConfirm(BinaryCodec):
         self.unique_order_id = get_string(buffer,'u32')
         self.unique_orig_order_id = get_string(buffer,'u32')
         self.cl_ord_id = get_string(buffer,'u32')
-        self.exec_type = buffer.read_bytes(1).decode('utf-8').strip('\x00')
+        self.exec_type = get_fixed_string(buffer, 1, 'utf-8')
         self.ord_rej_reason = buffer.read_u32()
         self.ord_cnfm_id = get_string(buffer,'u32')
     
@@ -107,7 +107,7 @@ class ExecutionReport(BinaryCodec):
         put_string(buffer, self.ord_cnfm_id, 'u32')
         buffer.write_u64(self.last_px)
         buffer.write_u64(self.last_qty)
-        write_fixed_string(buffer, self.ord_status, 1)
+        write_fixed_string(buffer, self.ord_status, 1, 'utf-8')
     
     def decode(self, buffer: ByteBuf):
         self.unique_order_id = get_string(buffer,'u32')
@@ -115,7 +115,7 @@ class ExecutionReport(BinaryCodec):
         self.ord_cnfm_id = get_string(buffer,'u32')
         self.last_px = buffer.read_u64()
         self.last_qty = buffer.read_u64()
-        self.ord_status = buffer.read_bytes(1).decode('utf-8').strip('\x00')
+        self.ord_status = get_fixed_string(buffer, 1, 'utf-8')
     
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
