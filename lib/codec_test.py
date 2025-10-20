@@ -87,8 +87,8 @@ class TestBufferUtils(unittest.TestCase):
         self.assertEqual(self.buffer.read_bytes(3), b'   ')
 
     def test_custom_padding(self):
-        """Test writing with custom padding (space instead of null byte)."""
-        write_fixed_string(self.buffer, "AB", 5, padding='0')
+        """Test writing with custom pad_char (space instead of null byte)."""
+        write_fixed_string(self.buffer, "AB", 5, pad_char='0')
         self.assertEqual(self.buffer.read_bytes(5), b'AB000')
 
 
