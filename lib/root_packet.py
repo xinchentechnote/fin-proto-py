@@ -102,54 +102,54 @@ class BasicPacket(BinaryCodec):
         self.field_i_16 = buffer.read_i16_le()
         self.field_i_32 = buffer.read_i32_le()
         self.field_i_64 = buffer.read_i64_le()
-        self.field_char = get_fixed_string(buffer, 1, 'utf-8', '0', True)
+        self.field_char = read_fixed_string(buffer, 1, 'utf-8', '0', True)
         self.field_u_8 = buffer.read_u8()
         self.field_u_16 = buffer.read_u16_le()
         self.field_u_32 = buffer.read_u32_le()
         self.field_u_64 = buffer.read_u64_le()
         self.field_f_32 = buffer.read_f32_le()
         self.field_f_64 = buffer.read_f64_le()
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_8_list.append(buffer.read_i8())
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_16_list.append(buffer.read_i16_le())
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_32_list.append(buffer.read_i32_le())
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_64_list.append(buffer.read_i64_le())
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
-            self.field_char_list.append(get_fixed_string(buffer, 1, 'utf-8', '0', True))
+            self.field_char_list.append(read_fixed_string(buffer, 1, 'utf-8', '0', True))
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_u_8_list.append(buffer.read_u8())
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_u_16_list.append(buffer.read_u16_le())
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_u_32_list.append(buffer.read_u32_le())
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_u_64_list.append(buffer.read_u64_le())
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_f_32_list.append(buffer.read_f32_le())
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_f_64_list.append(buffer.read_f64_le())
         
@@ -199,20 +199,20 @@ class StringPacket(BinaryCodec):
         self.field_fixed_string_10_list_pad = []
     
     def encode(self, buffer: ByteBuf):
-        put_string_le(buffer, self.field_dynamic_string, 'u16')
-        put_string_le(buffer, self.field_dynamic_string_1, 'u16')
+        write_string_le(buffer, self.field_dynamic_string, 'u16')
+        write_string_le(buffer, self.field_dynamic_string_1, 'u16')
         write_fixed_string(buffer, self.field_fixed_string_1, 1, 'utf-8', '0', True)
         write_fixed_string(buffer, self.field_fixed_string_10, 10, 'utf-8', '0', True)
         write_fixed_string(buffer, self.field_fixed_string_10_pad, 10, 'utf-8', ' ', True)
         size = len(self.field_dynamic_string_list)
         buffer.write_u16_le(size)
         for i in range(size):
-            put_string_le(buffer, self.field_dynamic_string_list[i], 'u16')
+            write_string_le(buffer, self.field_dynamic_string_list[i], 'u16')
         
         size = len(self.field_dynamic_string_1_list)
         buffer.write_u16_le(size)
         for i in range(size):
-            put_string_le(buffer, self.field_dynamic_string_1_list[i], 'u16')
+            write_string_le(buffer, self.field_dynamic_string_1_list[i], 'u16')
         
         size = len(self.field_fixed_string_1_list)
         buffer.write_u16_le(size)
@@ -231,30 +231,30 @@ class StringPacket(BinaryCodec):
         
     
     def decode(self, buffer: ByteBuf):
-        self.field_dynamic_string = get_string_le(buffer,'u16')
-        self.field_dynamic_string_1 = get_string_le(buffer,'u16')
-        self.field_fixed_string_1 = get_fixed_string(buffer, 1, 'utf-8', '0', True)
-        self.field_fixed_string_10 = get_fixed_string(buffer, 10, 'utf-8', '0', True)
-        self.field_fixed_string_10_pad = get_fixed_string(buffer, 10, 'utf-8', ' ', True)
-        size = get_len_le(buffer, 'u16')
+        self.field_dynamic_string = read_string_le(buffer,'u16')
+        self.field_dynamic_string_1 = read_string_le(buffer,'u16')
+        self.field_fixed_string_1 = read_fixed_string(buffer, 1, 'utf-8', '0', True)
+        self.field_fixed_string_10 = read_fixed_string(buffer, 10, 'utf-8', '0', True)
+        self.field_fixed_string_10_pad = read_fixed_string(buffer, 10, 'utf-8', ' ', True)
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
-            self.field_dynamic_string_list.append(get_string_le(buffer,'u16'))
+            self.field_dynamic_string_list.append(read_string_le(buffer,'u16'))
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
-            self.field_dynamic_string_1_list.append(get_string_le(buffer,'u16'))
+            self.field_dynamic_string_1_list.append(read_string_le(buffer,'u16'))
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
-            self.field_fixed_string_1_list.append(get_fixed_string(buffer, 1, 'utf-8', '0', True))
+            self.field_fixed_string_1_list.append(read_fixed_string(buffer, 1, 'utf-8', '0', True))
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
-            self.field_fixed_string_10_list.append(get_fixed_string(buffer, 10, 'utf-8', '0', True))
+            self.field_fixed_string_10_list.append(read_fixed_string(buffer, 10, 'utf-8', '0', True))
         
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
-            self.field_fixed_string_10_list_pad.append(get_fixed_string(buffer, 10, 'utf-8', '0', False))
+            self.field_fixed_string_10_list_pad.append(read_fixed_string(buffer, 10, 'utf-8', '0', False))
         
     
     def __eq__(self, other):
@@ -291,7 +291,7 @@ class SubPacket(BinaryCodec):
     
     def decode(self, buffer: ByteBuf):
         self.field_u_32 = buffer.read_u32_le()
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_16_list.append(buffer.read_i16_le())
         
@@ -322,7 +322,7 @@ class InerPacket(BinaryCodec):
     
     def decode(self, buffer: ByteBuf):
         self.field_u_32 = buffer.read_u32_le()
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             self.field_i_16_list.append(buffer.read_i16_le())
         
@@ -355,7 +355,7 @@ class NestedPacket(BinaryCodec):
     def decode(self, buffer: ByteBuf):
         self.sub_packet = SubPacket()
         self.sub_packet.decode(buffer)
-        size = get_len_le(buffer, 'u16')
+        size = read_len_le(buffer, 'u16')
         for i in range(size):
             _sub_packet = SubPacket()
             _sub_packet.decode(buffer)

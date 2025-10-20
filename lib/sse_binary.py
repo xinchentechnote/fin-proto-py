@@ -39,10 +39,10 @@ class Logon(BinaryCodec):
         buffer.write_u32(self.q_size)
     
     def decode(self, buffer: ByteBuf):
-        self.sender_comp_id = get_fixed_string(buffer, 32, 'utf-8')
-        self.target_comp_id = get_fixed_string(buffer, 32, 'utf-8')
+        self.sender_comp_id = read_fixed_string(buffer, 32, 'utf-8')
+        self.target_comp_id = read_fixed_string(buffer, 32, 'utf-8')
         self.heart_bt_int = buffer.read_u16()
-        self.prtcl_version = get_fixed_string(buffer, 8, 'utf-8')
+        self.prtcl_version = read_fixed_string(buffer, 8, 'utf-8')
         self.trade_date = buffer.read_u32()
         self.q_size = buffer.read_u32()
     
@@ -72,7 +72,7 @@ class Logout(BinaryCodec):
     
     def decode(self, buffer: ByteBuf):
         self.session_status = buffer.read_u32()
-        self.text = get_fixed_string(buffer, 64, 'utf-8')
+        self.text = read_fixed_string(buffer, 64, 'utf-8')
     
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -124,21 +124,21 @@ class NewOrderSingle(BinaryCodec):
     
     def decode(self, buffer: ByteBuf):
         self.biz_id = buffer.read_u32()
-        self.biz_pbu = get_fixed_string(buffer, 8, 'utf-8')
-        self.cl_ord_id = get_fixed_string(buffer, 10, 'utf-8')
-        self.security_id = get_fixed_string(buffer, 12, 'utf-8')
-        self.account = get_fixed_string(buffer, 13, 'utf-8')
+        self.biz_pbu = read_fixed_string(buffer, 8, 'utf-8')
+        self.cl_ord_id = read_fixed_string(buffer, 10, 'utf-8')
+        self.security_id = read_fixed_string(buffer, 12, 'utf-8')
+        self.account = read_fixed_string(buffer, 13, 'utf-8')
         self.owner_type = buffer.read_u8()
-        self.side = get_fixed_string(buffer, 1, 'utf-8')
+        self.side = read_fixed_string(buffer, 1, 'utf-8')
         self.price = buffer.read_i64()
         self.order_qty = buffer.read_i64()
-        self.ord_type = get_fixed_string(buffer, 1, 'utf-8')
-        self.time_in_force = get_fixed_string(buffer, 1, 'utf-8')
+        self.ord_type = read_fixed_string(buffer, 1, 'utf-8')
+        self.time_in_force = read_fixed_string(buffer, 1, 'utf-8')
         self.transact_time = buffer.read_u64()
-        self.credit_tag = get_fixed_string(buffer, 2, 'utf-8')
-        self.clearing_firm = get_fixed_string(buffer, 8, 'utf-8')
-        self.branch_id = get_fixed_string(buffer, 8, 'utf-8')
-        self.user_info = get_fixed_string(buffer, 32, 'utf-8')
+        self.credit_tag = read_fixed_string(buffer, 2, 'utf-8')
+        self.clearing_firm = read_fixed_string(buffer, 8, 'utf-8')
+        self.branch_id = read_fixed_string(buffer, 8, 'utf-8')
+        self.user_info = read_fixed_string(buffer, 32, 'utf-8')
     
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -194,16 +194,16 @@ class OrderCancel(BinaryCodec):
     
     def decode(self, buffer: ByteBuf):
         self.biz_id = buffer.read_u32()
-        self.biz_pbu = get_fixed_string(buffer, 8, 'utf-8')
-        self.cl_ord_id = get_fixed_string(buffer, 10, 'utf-8')
-        self.security_id = get_fixed_string(buffer, 12, 'utf-8')
-        self.account = get_fixed_string(buffer, 13, 'utf-8')
+        self.biz_pbu = read_fixed_string(buffer, 8, 'utf-8')
+        self.cl_ord_id = read_fixed_string(buffer, 10, 'utf-8')
+        self.security_id = read_fixed_string(buffer, 12, 'utf-8')
+        self.account = read_fixed_string(buffer, 13, 'utf-8')
         self.owner_type = buffer.read_u8()
-        self.side = get_fixed_string(buffer, 1, 'utf-8')
-        self.orig_cl_ord_id = get_fixed_string(buffer, 10, 'utf-8')
+        self.side = read_fixed_string(buffer, 1, 'utf-8')
+        self.orig_cl_ord_id = read_fixed_string(buffer, 10, 'utf-8')
         self.transact_time = buffer.read_u64()
-        self.branch_id = get_fixed_string(buffer, 8, 'utf-8')
-        self.user_info = get_fixed_string(buffer, 32, 'utf-8')
+        self.branch_id = read_fixed_string(buffer, 8, 'utf-8')
+        self.user_info = read_fixed_string(buffer, 32, 'utf-8')
     
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -287,34 +287,34 @@ class Confirm(BinaryCodec):
         write_fixed_string(buffer, self.user_info, 32, 'utf-8')
     
     def decode(self, buffer: ByteBuf):
-        self.pbu = get_fixed_string(buffer, 8, 'utf-8')
+        self.pbu = read_fixed_string(buffer, 8, 'utf-8')
         self.set_id = buffer.read_u32()
         self.report_index = buffer.read_u64()
         self.biz_id = buffer.read_u32()
-        self.exec_type = get_fixed_string(buffer, 1, 'utf-8')
-        self.biz_pbu = get_fixed_string(buffer, 8, 'utf-8')
-        self.cl_ord_id = get_fixed_string(buffer, 10, 'utf-8')
-        self.security_id = get_fixed_string(buffer, 12, 'utf-8')
-        self.account = get_fixed_string(buffer, 13, 'utf-8')
+        self.exec_type = read_fixed_string(buffer, 1, 'utf-8')
+        self.biz_pbu = read_fixed_string(buffer, 8, 'utf-8')
+        self.cl_ord_id = read_fixed_string(buffer, 10, 'utf-8')
+        self.security_id = read_fixed_string(buffer, 12, 'utf-8')
+        self.account = read_fixed_string(buffer, 13, 'utf-8')
         self.owner_type = buffer.read_u8()
-        self.side = get_fixed_string(buffer, 1, 'utf-8')
+        self.side = read_fixed_string(buffer, 1, 'utf-8')
         self.price = buffer.read_i64()
         self.order_qty = buffer.read_i64()
         self.leaves_qty = buffer.read_i64()
         self.cxl_qty = buffer.read_i64()
-        self.ord_type = get_fixed_string(buffer, 1, 'utf-8')
-        self.time_in_force = get_fixed_string(buffer, 1, 'utf-8')
-        self.ord_status = get_fixed_string(buffer, 1, 'utf-8')
-        self.credit_tag = get_fixed_string(buffer, 2, 'utf-8')
-        self.orig_cl_ord_id = get_fixed_string(buffer, 10, 'utf-8')
-        self.clearing_firm = get_fixed_string(buffer, 8, 'utf-8')
-        self.branch_id = get_fixed_string(buffer, 8, 'utf-8')
+        self.ord_type = read_fixed_string(buffer, 1, 'utf-8')
+        self.time_in_force = read_fixed_string(buffer, 1, 'utf-8')
+        self.ord_status = read_fixed_string(buffer, 1, 'utf-8')
+        self.credit_tag = read_fixed_string(buffer, 2, 'utf-8')
+        self.orig_cl_ord_id = read_fixed_string(buffer, 10, 'utf-8')
+        self.clearing_firm = read_fixed_string(buffer, 8, 'utf-8')
+        self.branch_id = read_fixed_string(buffer, 8, 'utf-8')
         self.ord_rej_reason = buffer.read_u32()
-        self.ord_cnfm_id = get_fixed_string(buffer, 16, 'utf-8')
-        self.orig_ord_cnfm_id = get_fixed_string(buffer, 16, 'utf-8')
+        self.ord_cnfm_id = read_fixed_string(buffer, 16, 'utf-8')
+        self.orig_ord_cnfm_id = read_fixed_string(buffer, 16, 'utf-8')
         self.trade_date = buffer.read_u32()
         self.transact_time = buffer.read_u64()
-        self.user_info = get_fixed_string(buffer, 32, 'utf-8')
+        self.user_info = read_fixed_string(buffer, 32, 'utf-8')
     
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -385,19 +385,19 @@ class CancelReject(BinaryCodec):
         write_fixed_string(buffer, self.user_info, 32, 'utf-8')
     
     def decode(self, buffer: ByteBuf):
-        self.pbu = get_fixed_string(buffer, 8, 'utf-8')
+        self.pbu = read_fixed_string(buffer, 8, 'utf-8')
         self.set_id = buffer.read_u32()
         self.report_index = buffer.read_u64()
         self.biz_id = buffer.read_u32()
-        self.biz_pbu = get_fixed_string(buffer, 8, 'utf-8')
-        self.cl_ord_id = get_fixed_string(buffer, 10, 'utf-8')
-        self.security_id = get_fixed_string(buffer, 12, 'utf-8')
-        self.orig_cl_ord_id = get_fixed_string(buffer, 10, 'utf-8')
-        self.branch_id = get_fixed_string(buffer, 8, 'utf-8')
+        self.biz_pbu = read_fixed_string(buffer, 8, 'utf-8')
+        self.cl_ord_id = read_fixed_string(buffer, 10, 'utf-8')
+        self.security_id = read_fixed_string(buffer, 12, 'utf-8')
+        self.orig_cl_ord_id = read_fixed_string(buffer, 10, 'utf-8')
+        self.branch_id = read_fixed_string(buffer, 8, 'utf-8')
         self.cxl_rej_reason = buffer.read_u32()
         self.trade_date = buffer.read_u32()
         self.transact_time = buffer.read_u64()
-        self.user_info = get_fixed_string(buffer, 32, 'utf-8')
+        self.user_info = read_fixed_string(buffer, 32, 'utf-8')
     
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -479,32 +479,32 @@ class Report(BinaryCodec):
         write_fixed_string(buffer, self.user_info, 32, 'utf-8')
     
     def decode(self, buffer: ByteBuf):
-        self.pbu = get_fixed_string(buffer, 8, 'utf-8')
+        self.pbu = read_fixed_string(buffer, 8, 'utf-8')
         self.set_id = buffer.read_u32()
         self.report_index = buffer.read_u64()
         self.biz_id = buffer.read_u32()
-        self.exec_type = get_fixed_string(buffer, 1, 'utf-8')
-        self.biz_pbu = get_fixed_string(buffer, 8, 'utf-8')
-        self.cl_ord_id = get_fixed_string(buffer, 10, 'utf-8')
-        self.security_id = get_fixed_string(buffer, 12, 'utf-8')
-        self.account = get_fixed_string(buffer, 13, 'utf-8')
+        self.exec_type = read_fixed_string(buffer, 1, 'utf-8')
+        self.biz_pbu = read_fixed_string(buffer, 8, 'utf-8')
+        self.cl_ord_id = read_fixed_string(buffer, 10, 'utf-8')
+        self.security_id = read_fixed_string(buffer, 12, 'utf-8')
+        self.account = read_fixed_string(buffer, 13, 'utf-8')
         self.owner_type = buffer.read_u8()
         self.order_entry_time = buffer.read_u64()
         self.last_px = buffer.read_i64()
         self.last_qty = buffer.read_i64()
         self.gross_trade_amt = buffer.read_i64()
-        self.side = get_fixed_string(buffer, 1, 'utf-8')
+        self.side = read_fixed_string(buffer, 1, 'utf-8')
         self.order_qty = buffer.read_i64()
         self.leaves_qty = buffer.read_i64()
-        self.ord_status = get_fixed_string(buffer, 1, 'utf-8')
-        self.credit_tag = get_fixed_string(buffer, 2, 'utf-8')
-        self.clearing_firm = get_fixed_string(buffer, 8, 'utf-8')
-        self.branch_id = get_fixed_string(buffer, 8, 'utf-8')
-        self.trd_cnfm_id = get_fixed_string(buffer, 16, 'utf-8')
-        self.ord_cnfm_id = get_fixed_string(buffer, 16, 'utf-8')
+        self.ord_status = read_fixed_string(buffer, 1, 'utf-8')
+        self.credit_tag = read_fixed_string(buffer, 2, 'utf-8')
+        self.clearing_firm = read_fixed_string(buffer, 8, 'utf-8')
+        self.branch_id = read_fixed_string(buffer, 8, 'utf-8')
+        self.trd_cnfm_id = read_fixed_string(buffer, 16, 'utf-8')
+        self.ord_cnfm_id = read_fixed_string(buffer, 16, 'utf-8')
         self.trade_date = buffer.read_u32()
         self.transact_time = buffer.read_u64()
-        self.user_info = get_fixed_string(buffer, 32, 'utf-8')
+        self.user_info = read_fixed_string(buffer, 32, 'utf-8')
     
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -564,13 +564,13 @@ class OrderReject(BinaryCodec):
     
     def decode(self, buffer: ByteBuf):
         self.biz_id = buffer.read_u32()
-        self.biz_pbu = get_fixed_string(buffer, 8, 'utf-8')
-        self.cl_ord_id = get_fixed_string(buffer, 10, 'utf-8')
-        self.security_id = get_fixed_string(buffer, 12, 'utf-8')
+        self.biz_pbu = read_fixed_string(buffer, 8, 'utf-8')
+        self.cl_ord_id = read_fixed_string(buffer, 10, 'utf-8')
+        self.security_id = read_fixed_string(buffer, 12, 'utf-8')
         self.ord_rej_reason = buffer.read_u32()
         self.trade_date = buffer.read_u32()
         self.transact_time = buffer.read_u64()
-        self.user_info = get_fixed_string(buffer, 32, 'utf-8')
+        self.user_info = read_fixed_string(buffer, 32, 'utf-8')
     
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -634,11 +634,11 @@ class ExecRptInfo(BinaryCodec):
     
     def decode(self, buffer: ByteBuf):
         self.platform_id = buffer.read_u16()
-        size = get_len(buffer, 'u16')
+        size = read_len(buffer, 'u16')
         for i in range(size):
-            self.pbu.append(get_fixed_string(buffer,  8, 'utf-8'))
+            self.pbu.append(read_fixed_string(buffer,  8, 'utf-8'))
         
-        size = get_len(buffer, 'u16')
+        size = read_len(buffer, 'u16')
         for i in range(size):
             self.set_id.append(buffer.read_u32())
         
@@ -667,7 +667,7 @@ class SubExecRptSync(BinaryCodec):
         buffer.write_u64(self.begin_report_index)
     
     def decode(self, buffer: ByteBuf):
-        self.pbu = get_fixed_string(buffer, 8, 'utf-8')
+        self.pbu = read_fixed_string(buffer, 8, 'utf-8')
         self.set_id = buffer.read_u32()
         self.begin_report_index = buffer.read_u64()
     
@@ -694,7 +694,7 @@ class ExecRptSync(BinaryCodec):
         
     
     def decode(self, buffer: ByteBuf):
-        size = get_len(buffer, 'u16')
+        size = read_len(buffer, 'u16')
         for i in range(size):
             _sub_exec_rpt_sync = SubExecRptSync()
             _sub_exec_rpt_sync.decode(buffer)
@@ -729,12 +729,12 @@ class SubExecRptSyncRsp(BinaryCodec):
         write_fixed_string(buffer, self.text, 64, 'utf-8')
     
     def decode(self, buffer: ByteBuf):
-        self.pbu = get_fixed_string(buffer, 8, 'utf-8')
+        self.pbu = read_fixed_string(buffer, 8, 'utf-8')
         self.set_id = buffer.read_u32()
         self.begin_report_index = buffer.read_u64()
         self.end_report_index = buffer.read_u64()
         self.rej_reason = buffer.read_u32()
-        self.text = get_fixed_string(buffer, 64, 'utf-8')
+        self.text = read_fixed_string(buffer, 64, 'utf-8')
     
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -762,7 +762,7 @@ class ExecRptSyncRsp(BinaryCodec):
         
     
     def decode(self, buffer: ByteBuf):
-        size = get_len(buffer, 'u16')
+        size = read_len(buffer, 'u16')
         for i in range(size):
             _sub_exec_rpt_sync_rsp = SubExecRptSyncRsp()
             _sub_exec_rpt_sync_rsp.decode(buffer)
@@ -791,7 +791,7 @@ class ExecRptEndOfStream(BinaryCodec):
         buffer.write_u64(self.end_report_index)
     
     def decode(self, buffer: ByteBuf):
-        self.pbu = get_fixed_string(buffer, 8, 'utf-8')
+        self.pbu = read_fixed_string(buffer, 8, 'utf-8')
         self.set_id = buffer.read_u32()
         self.end_report_index = buffer.read_u64()
     

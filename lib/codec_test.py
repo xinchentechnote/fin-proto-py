@@ -7,63 +7,63 @@ class TestBufferUtils(unittest.TestCase):
     def setUp(self):
         self.buffer = ByteBuf()  # Assuming ByteBuf is your buffer implementation
 
-    def test_put_len_u8(self):
-        put_len(self.buffer, 42, 'u8')
-        self.assertEqual(get_len(self.buffer, 'u8'), 42)
+    def test_write_len_u8(self):
+        write_len(self.buffer, 42, 'u8')
+        self.assertEqual(read_len(self.buffer, 'u8'), 42)
 
-    def test_put_len_u16_le(self):
-        put_len(self.buffer, 1024, 'u16')
-        self.assertEqual(get_len(self.buffer, 'u16'), 1024)
+    def test_write_len_u16_le(self):
+        write_len(self.buffer, 1024, 'u16')
+        self.assertEqual(read_len(self.buffer, 'u16'), 1024)
 
-    def test_put_len_u32_le(self):
-        put_len(self.buffer, 65536, 'u32')
-        self.assertEqual(get_len(self.buffer, 'u32'), 65536)
+    def test_write_len_u32_le(self):
+        write_len(self.buffer, 65536, 'u32')
+        self.assertEqual(read_len(self.buffer, 'u32'), 65536)
 
-    def test_put_len_u64_le(self):
-        put_len(self.buffer, 1234567890, 'u64')
-        self.assertEqual(get_len(self.buffer, 'u64'), 1234567890)
+    def test_write_len_u64_le(self):
+        write_len(self.buffer, 1234567890, 'u64')
+        self.assertEqual(read_len(self.buffer, 'u64'), 1234567890)
 
-    def test_put_len_i8(self):
-        put_len(self.buffer, -42, 'i8')
-        self.assertEqual(get_len(self.buffer, 'i8'), -42)
+    def test_write_len_i8(self):
+        write_len(self.buffer, -42, 'i8')
+        self.assertEqual(read_len(self.buffer, 'i8'), -42)
 
-    def test_put_len_i16_le(self):
-        put_len(self.buffer, -1024, 'i16')
-        self.assertEqual(get_len(self.buffer, 'i16'), -1024)
+    def test_write_len_i16_le(self):
+        write_len(self.buffer, -1024, 'i16')
+        self.assertEqual(read_len(self.buffer, 'i16'), -1024)
 
-    def test_put_len_invalid_type(self):
+    def test_write_len_invalid_type(self):
         with self.assertRaises(ValueError):
-            put_len(self.buffer, 42, 'invalid')
+            write_len(self.buffer, 42, 'invalid')
 
-    def test_put_string_empty(self):
-        put_string(self.buffer, "", 'u32')
-        self.assertEqual(get_string(self.buffer, 'u32'), "")
+    def test_write_string_empty(self):
+        write_string(self.buffer, "", 'u32')
+        self.assertEqual(read_string(self.buffer, 'u32'), "")
 
-    def test_put_string_utf8(self):
+    def test_write_string_utf8(self):
         test_str = "Hello, 世界!"
-        put_string(self.buffer, test_str, 'u16')
-        self.assertEqual(get_string(self.buffer, 'u16'), test_str)
+        write_string(self.buffer, test_str, 'u16')
+        self.assertEqual(read_string(self.buffer, 'u16'), test_str)
 
-    def test_put_string_custom_encoding(self):
+    def test_write_string_custom_encoding(self):
         test_str = "こんにちは"
-        put_string(self.buffer, test_str, 'u32', 'shift_jis')
-        self.assertEqual(get_string(self.buffer, 'u32', 'shift_jis'), test_str)
+        write_string(self.buffer, test_str, 'u32', 'shift_jis')
+        self.assertEqual(read_string(self.buffer, 'u32', 'shift_jis'), test_str)
 
-    def test_get_string_invalid_length(self):
+    def test_read_string_invalid_length(self):
         # Write a length that's too large for the buffer
-        put_len(self.buffer, 1000, 'u16')
+        write_len(self.buffer, 1000, 'u16')
         with self.assertRaises(Exception):  # Or whatever error your buffer raises
-            get_string(self.buffer, 'u16')
+            read_string(self.buffer, 'u16')
 
     def test_roundtrip_multiple_strings(self):
         strings = ["First", "", "Third string with spaces", "Final"]
         len_type = 'u32'
         
         for s in strings:
-            put_string(self.buffer, s, len_type)
+            write_string(self.buffer, s, len_type)
         
         for expected in strings:
-            actual = get_string(self.buffer, len_type)
+            actual = read_string(self.buffer, len_type)
             self.assertEqual(actual, expected)
 
     def test_write_exact_length(self):

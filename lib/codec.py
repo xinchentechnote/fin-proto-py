@@ -12,7 +12,7 @@ class BinaryCodec(ABC):
     def decode(self, buffer: ByteBuf):
         pass
 
-def put_len(buffer: ByteBuf, length: int, len_type: str) -> None:
+def write_len(buffer: ByteBuf, length: int, len_type: str) -> None:
     
     if len_type == 'u8':
         buffer.write_u8(length)
@@ -34,7 +34,7 @@ def put_len(buffer: ByteBuf, length: int, len_type: str) -> None:
         raise ValueError(f"Unsupported length type: {len_type}")
 
 
-def put_len_le(buffer: ByteBuf, length: int, len_type: str) -> None:
+def write_len_le(buffer: ByteBuf, length: int, len_type: str) -> None:
     
     if len_type == 'u8':
         buffer.write_u8(length)
@@ -55,23 +55,23 @@ def put_len_le(buffer: ByteBuf, length: int, len_type: str) -> None:
     else:
         raise ValueError(f"Unsupported length type: {len_type}")
 
-def put_string(buffer: ByteBuf, string: str, len_type: str, encoding = 'utf-8') -> None:
+def write_string(buffer: ByteBuf, string: str, len_type: str, encoding = 'utf-8') -> None:
     if string == None or string == '':
-        put_len(buffer, 0, len_type)
+        write_len(buffer, 0, len_type)
         return
     encoded_string = string.encode(encoding)
-    put_len(buffer, len(encoded_string), len_type)
+    write_len(buffer, len(encoded_string), len_type)
     buffer.write_bytes(encoded_string)
     
-def put_string_le(buffer: ByteBuf, string: str, len_type: str, encoding = 'utf-8') -> None:
+def write_string_le(buffer: ByteBuf, string: str, len_type: str, encoding = 'utf-8') -> None:
     if string == None or string == '':
-        put_len_le(buffer, 0, len_type)
+        write_len_le(buffer, 0, len_type)
         return
     encoded_string = string.encode(encoding)
-    put_len_le(buffer, len(encoded_string), len_type)
+    write_len_le(buffer, len(encoded_string), len_type)
     buffer.write_bytes(encoded_string)
     
-def get_len(buffer: ByteBuf, len_type: str) -> int:
+def read_len(buffer: ByteBuf, len_type: str) -> int:
     
     if len_type == 'u8':
         return buffer.read_u8()
@@ -93,7 +93,7 @@ def get_len(buffer: ByteBuf, len_type: str) -> int:
         raise ValueError(f"Unsupported length type: {len_type}")  
     
     
-def get_len_le(buffer: ByteBuf, len_type: str) -> int:
+def read_len_le(buffer: ByteBuf, len_type: str) -> int:
     
     if len_type == 'u8':
         return buffer.read_u8()
@@ -114,14 +114,14 @@ def get_len_le(buffer: ByteBuf, len_type: str) -> int:
     else:
         raise ValueError(f"Unsupported length type: {len_type}")
 
-def get_string(buffer: ByteBuf, len_type: str, encoding = 'utf-8') -> str:
+def read_string(buffer: ByteBuf, len_type: str, encoding = 'utf-8') -> str:
     
-    len = get_len(buffer, len_type)
+    len = read_len(buffer, len_type)
     return buffer.read_bytes(len).decode(encoding)
     
-def get_string_le(buffer: ByteBuf, len_type: str, encoding = 'utf-8', trim_padding:str = ' ', from_left:bool = False) -> str:
+def read_string_le(buffer: ByteBuf, len_type: str, encoding = 'utf-8', trim_padding:str = ' ', from_left:bool = False) -> str:
     
-    len = get_len_le(buffer, len_type)
+    len = read_len_le(buffer, len_type)
     if from_left:
         return buffer.read_bytes(len).decode(encoding).rstrip(trim_padding)
     else:
@@ -154,7 +154,7 @@ def write_fixed_string(buffer: ByteBuf, string: str, fixed_length: int, encoding
         padded = encoded.ljust(fixed_length, padding.encode(encoding))
     buffer.write_bytes(padded)
     
-def get_fixed_string(buffer: ByteBuf, fixed_length: int, encoding: str = 'utf-8', trim_padding: str = ' ', from_left: bool = False) -> str:
+def read_fixed_string(buffer: ByteBuf, fixed_length: int, encoding: str = 'utf-8', trim_padding: str = ' ', from_left: bool = False) -> str:
     """Read a fixed-length string from the buffer.
     
     Args:
