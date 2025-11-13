@@ -88,11 +88,13 @@ class TestStringPacket(unittest.TestCase):
         self.packet.field_fixed_string_1 = "x"
         self.packet.field_fixed_string_10 = "xxxxxxxxxx"
         self.packet.field_fixed_string_10_pad = "xxxxxxxxxx"
+        self.packet.field_fixed_string_10_pad_with_null_terminator = "xxxxxxxxxx"
         self.packet.field_dynamic_string_list = ["hello"]
         self.packet.field_dynamic_string_1_list = ["hello"]
         self.packet.field_fixed_string_1_list = ["x"]
         self.packet.field_fixed_string_10_list = ["xxxxxxxxxx"]
         self.packet.field_fixed_string_10_list_pad = ["xxxxxxxxxx"]
+        self.packet.field_fixed_string_10_pad_with_null_terminator_list = ["xxxxxxxxxx"]
         
 
     def test_encode_decode(self):
